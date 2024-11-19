@@ -1,0 +1,14 @@
+<div *ngIf="isLoading" class="preloader-container py-10">
+    <div class="flex justify-center items-center">
+        <div class="inline-flex">
+            <img
+                *ngFor="let letter of letters; let i = index"
+                [src]="letter.image"
+                [alt]="'letter-' + i"
+                [class]="letter.class"
+                [ngClass]="{ animate: currentIndex >= i }"
+            />
+        </div>
+    </div>
+    <span class="flex justify-center items-center font-semibold pt-2"> Cargando<span class="dots"></span> </span>
+</div>

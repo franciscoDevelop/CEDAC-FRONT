@@ -1,0 +1,89 @@
+<div class="panel">
+    <div class="mb-5 flex items-center justify-between">
+        <h5 class="text-lg font-semibold dark:text-white-light">{{ tableConfig.title }}</h5>
+    </div>
+    <div class="table-responsive">
+        <div class="flex justify-between items-center">
+            <div class="w-80 pb-5">
+                <app-search
+                    *ngIf="tableConfig.search.show"
+                    (search)="search($event)"
+                    [placeholder]="tableConfig.search.placeholder"
+                    [searchText]="tableConfig.search.searchText"
+                ></app-search>
+            </div>
+            <div class="w-80 pb-5">
+                <a *ngIf="tableConfig.button.show" [href]="tableConfig.button.link" class="btn btn-success h-12">
+                    <icon-plus class="mr-3 h-5 w-5" />
+                    {{ tableConfig.button.label }}
+                </a>
+            </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th *ngFor="let column of tableConfig.columns" [innerHTML]="column.label"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngIf="isLoading; else elseTemplate">
+                    <tr>
+                        <td [attr.colspan]="columnCount">
+                            <app-preloader></app-preloader>
+                        </td>
+                    </tr>
+                </ng-container>
+                <ng-template #elseTemplate>
+                    <tr *ngFor="let row of tableConfig.data">
+                        <td *ngFor="let column of tableConfig.columns">
+                            <ng-container *ngIf="column.identifier !== 'actions'; else actionsColumn">
+                                <ng-container *ngIf="column.identifier !== 'active'; else statusColumn">
+                                    <span [innerHTML]="row[column.identifier]"></span>
+                                </ng-container>
+                            </ng-container>
+                            <ng-template #actionsColumn>
+                                <div class="flex items-center">
+                                    <ng-container *ngFor="let action of row.actions">
+                                        <div class="p-1">
+                                            <app-action-button
+                                                *ngIf="action.type === 'button'"
+                                                [label]="action.label"
+                                                [action]="action.action"
+                                                [icon]="action.icon"
+                                                [color]="action.color"
+                                                [tooltipContent]="action.tooltip"
+                                            />
+                                        </div>
+                                        <div class="p-1">
+                                            <app-action-select *ngIf="action.type === 'select'" [options]="action.options" [action]="action.action" />
+                                        </div>
+                                        <div class="p-1">
+                                            <app-action-checkbox *ngIf="action.type === 'checkbox'" [checked]="action.checked" [action]="action.action" />
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </ng-template>
+                            <ng-template #statusColumn>
+                                <span class="badge whitespace-nowrap" [ngClass]="row.badge.class">{{ row.badge.text }}</span>
+                            </ng-template>
+                        </td>
+                    </tr>
+                </ng-template>
+            </tbody>
+        </table>
+        <div class="flex items-center flex-wrap flex-col sm:flex-row gap-4">
+            <div class="inline-flex items-center">
+                <span class="w-full">
+                    Mostrando {{ tableConfig.pagination.number + 1 }} de {{ tableConfig.pagination.totalPages }} de
+                    {{ tableConfig.pagination.totalElements }} registros
+                </span>
+                <select class="form-select text-white-dark w-24" (change)="changeSize($event)">
+                    <option *ngFor="let size of tableConfig?.show?.sizes" [value]="size">{{ size }}</option>
+                </select>
+            </div>
+            <div class="sm:ml-auto inline-flex items-center pt-9">
+                <app-pagination [paginationConfig]="tableConfig.pagination" (changePage)="changePage($event)"></app-pagination>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,6 @@
+<div [ngClass]="field.classes">
+    <label *ngIf="field.label" [for]="field.name" class="block mb-1">{{ field.label }}</label>
+    <select [id]="field.name" [formControlName]="field.name" class="form-select">
+        <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
+    </select>
+</div>

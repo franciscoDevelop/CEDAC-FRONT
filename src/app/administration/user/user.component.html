@@ -1,0 +1,10 @@
+<app-breadcrumb [breadcrumbs]="breadcrumbs" />
+<div class="pt-6">
+    <app-table
+        [isLoading]="isLoading"
+        [tableConfig]="userTableConfig"
+        (pageChange)="onPageChange($event)"
+        (searchChange)="onSearchChange($event)"
+        (sizeChange)="onSizeChange($event)"
+    />
+</div>

@@ -1,0 +1,4 @@
+<div>
+    <label *ngIf="field.label" [for]="field.name">{{ field.label }}</label>
+    <input [id]="field.name" type="text" [formControlName]="field.name" [ngClass]="field.classes" />
+</div>

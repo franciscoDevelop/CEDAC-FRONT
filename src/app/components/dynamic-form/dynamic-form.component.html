@@ -1,0 +1,26 @@
+<div class="panel">
+    <div class="mb-5 flex items-center justify-between">
+        <h5 class="text-lg font-semibold dark:text-white-light">Forms Grid</h5>
+    </div>
+    <div class="mb-5">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-5">
+            <!-- Iterar sobre las secciones -->
+            <div *ngFor="let sectionKey of FieldRowsKeys" class="space-y-4">
+                <h6 class="text-md font-semibold">{{ sectionKey }}</h6>
+
+                <!-- Iterar sobre filas dentro de la sección -->
+                <div *ngFor="let row of getRows(fields[sectionKey])" [ngClass]="'grid gap-4 ' + getGridCols(row)">
+                    <!-- Iterar sobre los campos dentro de cada fila -->
+                    <ng-component *ngFor="let field of row" [ngClass]="field.classes">
+                        <app-action-input *ngIf="field.type === 'input'" [field]="field" [form]="form"></app-action-input>
+                        <app-dynamic-checkbox *ngIf="field.type === 'checkbox'" [field]="field" [form]="form"></app-dynamic-checkbox>
+                        <app-dynamic-select *ngIf="field.type === 'select'" [field]="field" [form]="form"></app-dynamic-select>
+                        <app-dynamic-button *ngIf="field.type === 'button'" [field]="field"></app-dynamic-button>
+                    </ng-component>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary !mt-6">Submit</button>
+        </form>
+    </div>
+</div>

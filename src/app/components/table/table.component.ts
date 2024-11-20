@@ -8,6 +8,7 @@ import { SearchComponent } from '../search/search.component';
 import { TableConfig } from 'src/interface/table-config';
 import { SharedModule } from 'src/shared.module';
 import { PreloaderComponent } from '../preloader/preloader.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-table',
@@ -21,6 +22,7 @@ import { PreloaderComponent } from '../preloader/preloader.component';
         SearchComponent,
         SharedModule,
         PreloaderComponent,
+        RouterLink
     ],
     templateUrl: './table.component.html',
     styleUrl: './table.component.css',

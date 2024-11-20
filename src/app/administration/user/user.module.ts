@@ -20,7 +20,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes), CommonModule, TableComponent, ComponentsModule, SharedModule.forRoot(), UserFormComponent],
-    declarations: [UserComponent, BreadcrumbComponent, FormComponent],
+    imports: [RouterModule.forChild(routes), BreadcrumbComponent, CommonModule, TableComponent, ComponentsModule, SharedModule.forRoot(), UserFormComponent],
+    declarations: [UserComponent, FormComponent],
 })
 export class UserModule {}

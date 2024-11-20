@@ -1,5 +1,5 @@
 import { UserWithActionsInterface } from 'src/interface/user-with-actions-interface';
-import { AfterViewInit, ChangeDetectorRef, Component } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { UserService } from 'src/app/service/user.service';
 import { UserResponse } from 'src/interface/user-response';
 import { TableConfig } from 'src/interface/table-config';

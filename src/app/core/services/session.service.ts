@@ -9,7 +9,7 @@ import { LoadingService } from './loading.service';
 import { UserCurrent } from '../interface/current-interface';
 import md5 from 'md5-ts';
 import { User, UserInfo, UserLastAccess } from 'src/app/models/user.model';
-import { catchError, lastValueFrom, map, of } from 'rxjs';
+import { catchError, from, lastValueFrom, map, Observable, of, switchMap } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
@@ -570,24 +570,27 @@ export class SessionService {
      * @param password
      * @returns
      */
-    login(email: string, password: string): Promise<any> {
-        return new Promise((resolve, reject) => {
-            this.getLocation().then((location: any) => {
-                this.req
-                    .post('/login', { email, password, location })
-                    .then((res: any) => {
+    login(email: string, password: string): Observable<any> {
+        return from(this.getLocation()).pipe(
+            switchMap((location: any) =>
+                this.req.post('/login', { email, password, location }).pipe(
+                    switchMap((res: any) => {
                         if (res && res.success && res.token) {
                             this.token = res.token;
-                            this.details().then(resolve).catch(reject);
                             this.setStorage('IsLoggedIn', 'true');
+                            return from(this.details());
                         } else {
-                            reject(res.error || 'Credenciales incorrectas');
                             this.setStorage('IsLoggedIn', 'false');
+                            return of({ error: res.error || 'Credenciales incorrectas' });
                         }
-                    })
-                    .catch(reject);
-            });
-        });
+                    }),
+                    catchError((error) => {
+                        this.setStorage('IsLoggedIn', 'false');
+                        return of({ error });
+                    }),
+                ),
+            ),
+        );
     }
 
     logout() {
@@ -599,20 +602,20 @@ export class SessionService {
         return this.getStorage('isLoggedIn') === 'true';
     }
 
-    recover(email: string) {
-        return new Promise((resolve, reject) => {
-            const token = md5(this.APP_KEY + email);
-            this.req
-                .put('/recovery/' + token, { email })
-                .then((res: any) => {
-                    if (res && res.success) {
-                        resolve(true);
-                    } else {
-                        reject(res.error || 'No existe el correo');
-                    }
-                })
-                .catch(reject);
-        });
+    recover(email: string): Observable<any> {
+        const token = md5(this.APP_KEY + email);
+        return this.req.put(`/recovery/${token}`, { email }).pipe(
+            map((res: any) => {
+                if (res && res.success) {
+                    return true;
+                } else {
+                    throw new Error(res.error || 'No existe el correo');
+                }
+            }),
+            catchError((error) => {
+                return of({ error: error.message });
+            }),
+        );
     }
 
     /**

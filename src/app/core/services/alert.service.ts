@@ -83,6 +83,8 @@ export class AlertService {
             text: rd.text || 'El envío de la información falló, por favor intente nuevamente.',
             confirmButtonColor: rd.confirmButtonColor || 'orange',
             confirmButtonText: rd.confirmButtonText || 'Aceptar',
+            padding: '2em',
+            customClass: rd.customClass || 'sweet-alerts'
         });
     }
 

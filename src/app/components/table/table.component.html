@@ -13,7 +13,7 @@
                 ></app-search>
             </div>
             <div class="w-80 pb-5">
-                <a *ngIf="tableConfig.button.show" [href]="tableConfig.button.link" class="btn btn-success h-12">
+                <a *ngIf="tableConfig.button.show" [routerLink]="tableConfig.button.link" class="btn btn-success h-12">
                     <icon-plus class="mr-3 h-5 w-5" />
                     {{ tableConfig.button.label }}
                 </a>

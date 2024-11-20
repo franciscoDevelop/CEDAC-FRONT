@@ -1,6 +1,6 @@
 <ol class="flex text-gray-500 font-semibold dark:text-white-dark pt-10">
     <li><img class="ml-[5px] w-52 flex-none" src="/assets/images/logos/logo_cedac.svg" alt="" /></li>
     <li class="before:content-['/'] before:px-1.5 pt-2" *ngFor="let breadcrumb of breadcrumbs">
-        <a href="{{ breadcrumb.link }}" class="text-black dark:text-white-light hover:text-black/70 dark:hover:text-white-light/70">{{ breadcrumb.name }}</a>
+        <a [routerLink]="breadcrumb.link" class="text-black dark:text-white-light hover:text-black/70 dark:hover:text-white-light/70">{{ breadcrumb.name }}</a>
     </li>
 </ol>

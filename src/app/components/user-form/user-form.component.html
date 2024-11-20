@@ -4,106 +4,138 @@
     </div>
     <div class="mb-5">
         <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-5" novalidate>
-            <div class="flex justify-end">
-                <label class="mt-1 flex cursor-pointer items-center">
-                    <span class="text-white-dark mr-2">Activo</span>
-                    <input type="checkbox" class="form-checkbox" />
-                </label>
-            </div>
-            <div>
-                <div class="flex sm:flex-row flex-col" [ngClass]="isSubmitForm ? (form.controls['rpe'].errors ? 'has-error' : 'has-success') : ''">
-                    <label for="rpeeject" class="mb-0 sm:w-28 sm:ltr:mr-2 rtl:ml-2">RPE:</label>
-                    <input id="rpeeject" formControlName="rpe" type="text" placeholder="RPE" class="form-input w-40" />
+            <div formGroupName="user">
+                <div class="flex justify-end">
+                    <label class="mt-1 flex cursor-pointer items-center">
+                        <span class="text-white-dark mr-2">Activo</span>
+                        <input type="checkbox" class="form-checkbox" />
+                    </label>
                 </div>
-                <div class="pl-[7.5rem] mt-[0.28rem]">
-                    <ng-container *ngIf="isSubmitForm && !form.controls['rpe'].errors">
-                        <span class="rounded bg-[#1abc9c] py-1 px-2 text-white">Perfecto!</span>
-                    </ng-container>
-                    <ng-container *ngIf="isSubmitForm && form.controls['rpe'].errors">
-                        <span class="rounded bg-danger py-1 px-2 text-white">Ingresa el RPE</span>
-                    </ng-container>
-                </div>
-            </div>
-            <div>
-                <div class="flex sm:flex-row flex-col" [ngClass]="isSubmitForm ? (form.controls['name'].errors ? 'has-error' : 'has-success') : ''">
-                    <label for="name" class="mb-0 sm:w-28 sm:ltr:mr-2 rtl:ml-2">Nombre:</label>
-                    <input id="name" type="text" formControlName="name" placeholder="Ingresa el Nombre" class="form-input flex-1" />
-                </div>
-                <div class="pl-[7.5rem] mt-[0.25rem]">
-                    <ng-container *ngIf="isSubmitForm && !form.controls['name'].errors">
-                        <span class="rounded bg-[#1abc9c] py-1 px-2 text-white">Perfecto!</span>
-                    </ng-container>
-                    <ng-container *ngIf="isSubmitForm && form.controls['name'].errors">
-                        <span class="rounded bg-danger py-1 px-2 text-white">Ingresa el Nombre</span>
-                    </ng-container>
-                </div>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <div class="flex sm:flex-row flex-col" [ngClass]="isSubmitForm ? (form.controls['email'].errors ? 'has-error' : 'has-success') : ''">
-                        <label for="email" class="mb-0 sm:w-28 sm:ltr:mr-2 rtl:ml-2">Correo electrónico:</label>
-                        <input id="email" type="text" formControlName="email" placeholder="Ingresa el Correo electrónico" class="form-input flex-1" />
+                    <div class="flex sm:flex-row flex-col" [ngClass]="isSubmitForm ? (form.get('user.rpe')?.errors ? 'has-error' : 'has-success') : ''">
+                        <label for="rpeeject" class="mb-0 sm:w-28 sm:ltr:mr-2 rtl:ml-2">RPE:</label>
+                        <input id="rpeeject" formControlName="rpe" type="text" placeholder="RPE" class="form-input w-40" />
                     </div>
-                    <div class="pl-[7.5rem] mt-[0.25rem]">
-                        <ng-container *ngIf="isSubmitForm && !form.controls['email'].errors">
+                    <div class="pl-[7.5rem] mt-[0.28rem]">
+                        <ng-container *ngIf="isSubmitForm && !form.get('user.rpe')?.errors">
                             <span class="rounded bg-[#1abc9c] py-1 px-2 text-white">Perfecto!</span>
                         </ng-container>
-                        <ng-container *ngIf="isSubmitForm && form.controls['email'].errors">
-                            <span class="rounded bg-danger py-1 px-2 text-white"
-                                >{{
-                                    form.controls['email'].errors['required'] && !form.controls['email'].errors['email'] ? 'Ingresa el Correo Electrónico' : ''
-                                }}
-                                {{
-                                    !form.controls['email'].errors['required'] && form.controls['email'].errors['email']
-                                        ? 'Ingresa un Correo Electrónico Valido'
-                                        : ''
-                                }}</span
-                            >
+                        <ng-container *ngIf="isSubmitForm && form.get('user.rpe')?.errors">
+                            <span class="rounded bg-danger py-1 px-2 text-white">Ingresa el RPE</span>
                         </ng-container>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex sm:flex-row flex-col" [ngClass]="isSubmitForm ? (form.get('user.name')?.errors ? 'has-error' : 'has-success') : ''">
+                        <label for="name" class="mb-0 sm:w-28 sm:ltr:mr-2 rtl:ml-2">Nombre:</label>
+                        <input id="name" type="text" formControlName="name" placeholder="Ingresa el Nombre" class="form-input flex-1" />
+                    </div>
+                    <div class="pl-[7.5rem] mt-[0.25rem]">
+                        <ng-container *ngIf="isSubmitForm && !form.get('user.name')?.errors">
+                            <span class="rounded bg-[#1abc9c] py-1 px-2 text-white">Perfecto!</span>
+                        </ng-container>
+                        <ng-container *ngIf="isSubmitForm && form.get('user.name')?.errors">
+                            <span class="rounded bg-danger py-1 px-2 text-white">Ingresa el Nombre</span>
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <div class="flex sm:flex-row flex-col" [ngClass]="isSubmitForm ? (form.get('user.email')?.errors ? 'has-error' : 'has-success') : ''">
+                            <label for="email" class="mb-0 sm:w-28 sm:ltr:mr-2 rtl:ml-2">Correo electrónico:</label>
+                            <input id="email" type="text" formControlName="email" placeholder="Ingresa el Correo electrónico" class="form-input flex-1" />
+                        </div>
+                        <div class="pl-[7.5rem] mt-[0.25rem]">
+                            <ng-container *ngIf="isSubmitForm && !form.get('user.email')?.errors">
+                                <span class="rounded bg-[#1abc9c] py-1 px-2 text-white">Perfecto!</span>
+                            </ng-container>
+                            <ng-container *ngIf="isSubmitForm && form.get('user.email')?.errors">
+                                <span class="rounded bg-danger py-1 px-2 text-white"
+                                    >{{
+                                        form.get('user.email')?.errors?.['required'] && !form.get('user.email')?.errors?.['email']
+                                            ? 'Ingresa el Correo Electrónico'
+                                            : ''
+                                    }}
+                                    {{
+                                        !form.get('user.email')?.errors?.['required'] && form.get('user.email')?.errors?.['email']
+                                            ? 'Ingresa un Correo Electrónico Valido'
+                                            : ''
+                                    }}</span
+                                >
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="flex sm:flex-row flex-col">
+                        <label for="phone" class="mb-0 sm:w-28 sm:ltr:mr-2 rtl:ml-2">Teléfono:</label>
+                        <input id="phone" type="text" formControlName="phone" placeholder="Ingresa el teléfono" class="form-input flex-1" />
                     </div>
                 </div>
                 <div class="flex sm:flex-row flex-col">
-                    <label for="phone" class="mb-0 sm:w-28 sm:ltr:mr-2 rtl:ml-2">Teléfono:</label>
-                    <input id="phone" type="text" placeholder="Ingresa el teléfono" class="form-input flex-1" />
+                    <label for="society" class="mb-0 sm:w-28 sm:ltr:mr-2 rtl:ml-2">Sociedad:</label>
+                    <label for="societyText">{{ society }} - {{ tsociety }}</label>
                 </div>
-            </div>
-            <div class="flex sm:flex-row flex-col">
-                <label for="society" class="mb-0 sm:w-28 sm:ltr:mr-2 rtl:ml-2">Sociedad:</label>
-                <label for="societyText"></label>
-            </div>
-            <div class="flex sm:flex-row flex-col">
-                <label for="profitCenter" class="mb-0 sm:w-28 sm:ltr:mr-2 rtl:ml-2">Centro de Beneficio:</label>
-                <label for="profitCenterText"></label>
-            </div>
-            <div>
+                <div class="flex sm:flex-row flex-col">
+                    <label for="profitCenter" class="mb-0 sm:w-28 sm:ltr:mr-2 rtl:ml-2">Centro de Beneficio:</label>
+                    <label for="profitCenterText">{{ profitCenter }} - {{ tprofitCenter }}</label>
+                </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div class="flex sm:flex-row flex-col" [ngClass]="isSubmitForm ? (form.controls['costCenter'].errors ? 'has-error' : 'has-success') : ''">
-                        <label for="costCenter" class="mb-0 sm:w-28 sm:ltr:mr-2 rtl:ml-2">Centro de Costo:</label>
-                        <input id="costCenter" type="text" formControlName="costCenter" placeholder="Ingresa Centro de Costo" class="form-input flex-1" />
+                    <div>
+                        <div
+                            class="flex sm:flex-row flex-col"
+                            [ngClass]="isSubmitForm ? (form.get('user.costCenter')?.errors ? 'has-error' : 'has-success') : ''"
+                        >
+                            <label for="costCenter" class="mb-0 sm:w-28 sm:ltr:mr-2 rtl:ml-2">Centro de Costo:</label>
+                            <input
+                                id="costCenter"
+                                (blur)="loadCostCenter($event)"
+                                type="text"
+                                formControlName="costCenter"
+                                placeholder="Ingresa Centro de Costo"
+                                class="form-input flex-1"
+                            />
+                        </div>
+                        <div class="pl-[7.5rem] mt-[0.25rem]">
+                            <ng-container *ngIf="isSubmitForm && !form.get('user.costCenter')?.errors">
+                                <span class="rounded bg-[#1abc9c] py-1 px-2 text-white">Perfecto!</span>
+                            </ng-container>
+                            <ng-container *ngIf="isSubmitForm && form.get('user.costCenter')?.errors">
+                                <span class="rounded bg-danger py-1 px-2 text-white">Ingresa el Centro de Costo</span>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="flex sm:flex-row flex-col">
+                        <label for="phone" class="mb-0 sm:w-full sm:ltr:mr-2 rtl:ml-2">{{ tcostCenter }}</label>
                     </div>
                 </div>
-                <div class="pl-[7.5rem] mt-[0.25rem]">
-                    <ng-container *ngIf="isSubmitForm && !form.controls['costCenter'].errors">
-                        <span class="rounded bg-[#1abc9c] py-1 px-2 text-white">Perfecto!</span>
-                    </ng-container>
-                    <ng-container *ngIf="isSubmitForm && form.controls['costCenter'].errors">
-                        <span class="rounded bg-danger py-1 px-2 text-white">Ingresa el Centro de Costo</span>
-                    </ng-container>
+                <div class="flex sm:flex-row flex-col">
+                    <label for="sirch" class="mb-0 sm:w-28 sm:ltr:mr-2 rtl:ml-2">Información SIRH:</label>
+                    <label for="sirchText"></label>
+                </div>
+                <div class="flex sm:flex-row flex-col">
+                    <label for="sap" class="mb-0 sm:w-28 sm:ltr:mr-2 rtl:ml-2">Información SAP:</label>
+                    <label for="sapText"></label>
                 </div>
             </div>
-            <div class="flex sm:flex-row flex-col">
-                <label for="sirch" class="mb-0 sm:w-28 sm:ltr:mr-2 rtl:ml-2">Información SIRH:</label>
-                <label for="sirchText"></label>
+            <div [ngClass]="isSubmitForm ? (form.controls['justification'].errors ? 'has-error' : 'has-success') : ''">
+                <label for="justificationTextArea">Justificación</label>
+                <textarea
+                    id="justificationTextArea"
+                    rows="3"
+                    class="form-textarea"
+                    formControlName="justification"
+                    placeholder="En caso de hacer alguna modificación describa detalladamente la razón por la que hará dicho cambio . . ."
+                ></textarea>
+                <ng-container *ngIf="isSubmitForm && !form.controls['justification'].errors">
+                    <span class="rounded bg-[#1abc9c] py-1 px-2 text-white">Perfecto!</span>
+                </ng-container>
+                <ng-container *ngIf="isSubmitForm && form.controls['justification'].errors">
+                    <span class="rounded bg-danger py-1 px-2 text-white">Ingresa la Justificación</span>
+                </ng-container>
             </div>
-            <div class="flex sm:flex-row flex-col">
-                <label for="sap" class="mb-0 sm:w-28 sm:ltr:mr-2 rtl:ml-2">Información SAP:</label>
-                <label for="sapText"></label>
-            </div>
-
             <div class="flex justify-end">
                 <div class="inline-flex">
                     <button type="submit" class="btn btn-success !mt-6 mr-4">Crear</button>
-                    <button type="button" class="btn btn-danger !mt-6">Regresar</button>
+                    <a routerLink="/administracion/usuarios" class="btn btn-danger !mt-6 cursor-pointer">Regresar</a>
                 </div>
             </div>
         </form>

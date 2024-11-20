@@ -9,110 +9,87 @@ import { environment } from 'src/environments/environment';
 export class RequestService {
     url: string = environment.apiBaseUrl;
 
-    constructor(private readonly http: HttpClient) {}
+    constructor(private http: HttpClient) {}
 
-    public stringifyIfObject(value: any): any {
-        if (value && typeof value === 'object') {
+    /**
+     * Convierte un valor a JSON si es un objeto.
+     * @param value Valor a procesar.
+     * @returns Valor procesado.
+     */
+    private stringifyIfObject(value: any): any {
+        if (value && typeof value === 'object' && !(value instanceof File)) {
             return JSON.stringify(value);
         }
         return value;
     }
+
     /**
-     * Procesa los datos para enviarlos como FormData en una petición POST
-     * @param fields Estructura de campos
-     * @param files Estructura de archivos
-     * @returns  Devuelve un objeto FormData
+     * Crea un objeto FormData para enviar en una petición multipart/form-data.
+     * @param fields Campos normales (key-value).
+     * @param files Archivos a incluir.
+     * @returns Objeto FormData.
      */
-    public formData(fields: any = {}, files: any = {}): FormData {
+    private formData(fields: any = {}, files: any = {}): FormData {
         const formData = new FormData();
-        for (const key in fields) {
+
+        // Agregar campos normales
+        Object.keys(fields).forEach((key) => {
             if (fields[key] !== null && fields[key] !== undefined) {
-                formData.append(key, this.stringifyIfObject(fields[key]));
+                formData.append(key, new Blob([this.stringifyIfObject(fields[key])], { type: 'application/json' }));
             }
-        }
-        for (const key in files) {
-            if (typeof files[key] === 'object' && files[key].name !== undefined) {
-                formData.append(key, files[key], files[key].name);
+        });
+
+        // Agregar archivos
+        Object.keys(files).forEach((key) => {
+            const file = files[key];
+            if (file instanceof File) {
+                formData.append(key, file, file.name);
             }
-        }
+        });
+
         return formData;
     }
 
     /**
-     *  Realiza una petición GET
-     * @param url URL a la que se realizará la petición
-     * @param params parámetros que se enviarán en la petición
-     * @returns Devuelve una promesa con la respuesta de la petición
+     * Realiza una petición GET.
+     * @param url URL de la API.
+     * @param params Parámetros opcionales.
+     * @returns Observable con la respuesta.
      */
-    // public get<T>(url: string, params: any = {}): Observable<T> {
-    //     return this.http.get<T>(this.url + url, { params }).subscribe({
-    //         next: (rs) => {
-    //             resolve(rs);
-    //         },
-    //         error: (err) => {
-    //             reject(err);
-    //         },
-    //     });
-    // }
     public get<T>(url: string, params: any = {}): Observable<T> {
         return this.http.get<T>(this.url + url, { params });
     }
 
-    // get<T>(url: string): Observable<T> {
-    //     return this.http.get<T>(url);
-    // }
-
     /**
-     * Realiza una petición POST a una URL con los parámetros indicados en params
-     *
-     * @param url
-     * @param params
-     * @returns
+     * Realiza una petición POST.
+     * @param url URL de la API.
+     * @param fields Campos normales.
+     * @param files Archivos opcionales.
+     * @returns Observable con la respuesta.
      */
-    public post(url: string, fields: any = {}, files: any = {}) {
-        return new Promise((resolve, reject) => {
-            this.http.post(this.url + url, this.formData(fields, files)).subscribe({
-                next: (rs) => {
-                    resolve(rs);
-                },
-                error: (err) => {
-                    reject(err);
-                },
-            });
-        });
-    }
-
-    public put(url: string, fields: any = {}, files: any = {}) {
-        return new Promise((resolve, reject) => {
-            fields['_method'] = 'PUT';
-            //fields['_token'] = window['csrf_token'];
-            this.http.post(this.url + url, this.formData(fields, files)).subscribe({
-                next: (rs) => {
-                    resolve(rs);
-                },
-                error: (err) => {
-                    reject(err);
-                },
-            });
-        });
+    public post<T>(url: string, fields: any = {}, files: any = {}): Observable<T> {
+        return this.http.post<T>(this.url + url, this.formData(fields, files));
     }
 
     /**
-     * Realiza una petición DELETE a una URL
-     * @param url
-     * @param params
-     * @returns
+     * Realiza una petición PUT.
+     * @param url URL de la API.
+     * @param fields Campos normales.
+     * @param files Archivos opcionales.
+     * @returns Observable con la respuesta.
      */
-    public delete(url: string, params: any = {}) {
-        return new Promise((resolve, reject) => {
-            this.http.delete(this.url + url, { params }).subscribe({
-                next: (rs) => {
-                    resolve(rs);
-                },
-                error: (err) => {
-                    reject(err);
-                },
-            });
-        });
+    public put<T>(url: string, fields: any = {}, files: any = {}): Observable<T> {
+        fields['_method'] = 'PUT'; // Para compatibilidad con algunas APIs.
+        return this.http.post<T>(this.url + url, this.formData(fields, files));
+    }
+
+    /**
+     * Realiza una petición DELETE.
+     * @param url URL de la API.
+     * @param params Parámetros opcionales.
+     * @returns Observable con la respuesta.
+     */
+    public delete<T>(url: string, params: any = {}): Observable<T> {
+        return this.http.delete<T>(this.url + url, { params });
     }
 }

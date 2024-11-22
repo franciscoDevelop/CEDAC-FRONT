@@ -7,6 +7,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { UserRequest } from 'src/interface/user-request';
 import { UserResponseInterface } from 'src/interface/user-response-interface';
 import { environment } from 'src/environments/environment';
+import { UserEditInterface } from 'src/interface/user-edit-interface';
 
 @Injectable({
     providedIn: 'root',
@@ -26,9 +27,9 @@ export class UserService {
         return this.request.get<UserResponse>(url, params);
     }
 
-    getUser(rpe: string): Observable<any> {
+    getUser(rpe: string | null): Observable<UserEditInterface> {
         const route = `/users/${rpe}`;
-        return this.http.get(this.url + route);
+        return this.http.get<UserEditInterface>(this.url + route);
     }
 
     registerUser(userRequest: UserRequest): Observable<UserResponseInterface> {

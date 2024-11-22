@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { ProfitSocietyCenterService } from 'src/app/service/profit-society-center-service.service';
 import { UserService } from 'src/app/service/user.service';
 import { ProfitSocietyCenterInterface } from 'src/interface/profit-society-center-interface';
+import { UserEditInterface } from 'src/interface/user-edit-interface';
 
 @Component({
     selector: 'app-user-form',
@@ -15,8 +16,10 @@ import { ProfitSocietyCenterInterface } from 'src/interface/profit-society-cente
     templateUrl: './user-form.component.html',
     styleUrl: './user-form.component.css',
 })
-export class UserFormComponent {
+export class UserFormComponent implements OnChanges {
     @Input() title!: string;
+    @Input() userDetail!: UserEditInterface;
+    @Input() userRpe!: string | undefined;
 
     form!: FormGroup;
     isSubmitForm = false;
@@ -26,6 +29,8 @@ export class UserFormComponent {
     profitCenter!: string;
     tprofitCenter!: string;
     tcostCenter!: string;
+    sapInfo!: string;
+    sirhInfo!: string;
 
     constructor(
         private alertService: AlertService,
@@ -35,6 +40,33 @@ export class UserFormComponent {
         private readonly profitSocietyCenterService: ProfitSocietyCenterService,
     ) {
         this.initForm();
+    }
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['userDetail'] && changes['userDetail'].currentValue) {
+
+            this.form.get('user.rpe')?.disable();
+            this.form.patchValue({
+                user: {
+                    rpe: this.userRpe,
+                    name: this.userDetail.data.user.name,
+                    email: this.userDetail.data.user.email,
+                    phone: this.userDetail.data.user.phone,
+                    costCenter: !Number.isNaN(Number(this.userDetail.data.user.costCenter))
+                        ? Number(this.userDetail.data.user.costCenter)
+                        : this.userDetail.data.user.costCenter,
+                    active: this.userDetail.data.user.active === 1,
+                },
+            });
+            this.society = this.userDetail.data.user.society;
+            this.tsociety = this.userDetail.data.user.tsociety;
+            this.profitCenter = this.userDetail.data.user.profitCenter;
+            this.tprofitCenter = this.userDetail.data.user.tprofitCenter;
+            this.tcostCenter = this.userDetail.data.user.tcostCenter;
+            this.sirhInfo = this.userDetail.data.user.sirh;
+            this.sapInfo = this.userDetail.data.user.sapuser;
+        } else {
+            this.form.reset();
+        }
     }
 
     initForm() {
@@ -47,6 +79,7 @@ export class UserFormComponent {
                 society: [''],
                 phone: [''],
                 costCenter: ['', Validators.required],
+                active: [true],
             }),
             justification: ['', Validators.required],
         });

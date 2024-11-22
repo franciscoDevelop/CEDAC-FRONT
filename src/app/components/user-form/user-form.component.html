@@ -8,7 +8,7 @@
                 <div class="flex justify-end">
                     <label class="mt-1 flex cursor-pointer items-center">
                         <span class="text-white-dark mr-2">Activo</span>
-                        <input type="checkbox" class="form-checkbox" />
+                        <input type="checkbox" formControlName="active" class="form-checkbox" />
                     </label>
                 </div>
                 <div>
@@ -109,11 +109,11 @@
                 </div>
                 <div class="flex sm:flex-row flex-col">
                     <label for="sirch" class="mb-0 sm:w-28 sm:ltr:mr-2 rtl:ml-2">Información SIRH:</label>
-                    <label for="sirchText"></label>
+                    <label for="sirchText">{{ sirhInfo }}</label>
                 </div>
                 <div class="flex sm:flex-row flex-col">
                     <label for="sap" class="mb-0 sm:w-28 sm:ltr:mr-2 rtl:ml-2">Información SAP:</label>
-                    <label for="sapText"></label>
+                    <label for="sapText">{{ sapInfo }}</label>
                 </div>
             </div>
             <div [ngClass]="isSubmitForm ? (form.controls['justification'].errors ? 'has-error' : 'has-success') : ''">

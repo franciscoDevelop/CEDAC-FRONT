@@ -8,6 +8,8 @@ import { UserRequest } from 'src/interface/user-request';
 import { UserResponseInterface } from 'src/interface/user-response-interface';
 import { environment } from 'src/environments/environment';
 import { UserEditInterface } from 'src/interface/user-edit-interface';
+import { ExpertRolesInterface } from 'src/interface/expert-roles-interface';
+import { CedacRolesInterface } from 'src/interface/cedac-roles-interface';
 
 @Injectable({
     providedIn: 'root',
@@ -35,5 +37,20 @@ export class UserService {
     registerUser(userRequest: UserRequest): Observable<UserResponseInterface> {
         const route = `/users`;
         return this.http.post<UserResponseInterface>(this.url + route, userRequest);
+    }
+
+    getExpertRoles(rpe: string): Observable<ExpertRolesInterface> {
+        const route = `/users/expert-roles/${rpe}`;
+        return this.http.get<ExpertRolesInterface>(this.url + route);
+    }
+
+    getCEDACRoles(rpe: string): Observable<CedacRolesInterface> {
+        const route = `/users/cedac-roles/${rpe}`;
+        return this.http.get<CedacRolesInterface>(this.url + route);
+    }
+
+    getRequest(rpe: string): Observable<any> {
+        const route = `/users/request/${rpe}`;
+        return this.http.get<any>(this.url + route);
     }
 }

@@ -1,1 +1,133 @@
-<p>roles works!</p>
+<app-breadcrumb [breadcrumbs]="breadcrumbs"></app-breadcrumb>
+<div class="pt-6">
+    <div class="panel">
+        <div class="mb-5 flex items-center justify-between">
+            <h5 class="text-lg font-semibold dark:text-white-light">{{ title }}</h5>
+        </div>
+        <div class="mb-5">
+            <form>
+                <div class="sm:flex justify-between items-center gap-5 md:gap-20">
+                    <label for="rpeInput" class="w-16">RPE:</label>
+                    <input id="rpeInput" type="text" class="form-input border-none focus:outline-none" [value]="rpe" readonly />
+                </div>
+                <div class="sm:flex justify-between items-center gap-5 md:gap-20 mt-1">
+                    <label for="nameInput" class="w-16">Nombre:</label>
+                    <input id="nameInput" type="text" class="form-input border-none focus:outline-none" [value]="userName" readonly />
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="bg-white dark:bg-black"></th>
+                            <th class="bg-white dark:bg-black"></th>
+                            <th class="bg-white dark:bg-black"></th>
+                            <th class="bg-white dark:bg-black"></th>
+                            <th class="bg-white dark:bg-black"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center"></td>
+                            <td class="text-center"><span class="font-bold">Roles CEDAC</span></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"><span class="font-bold">Roles Usuario</span></td>
+                            <td class="text-center"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <span class="font-bold"
+                                    >Expertos <br />
+                                    de <br />
+                                    Atención</span
+                                >
+                            </td>
+                            <td class="text-center">
+                                <select #expertCEDACRoles class="form-multiselect text-white-dark" multiple>
+                                    <ng-container *ngFor="let er of expertRoles">
+                                        <option *ngIf="!er.active" [value]="er.groupName">{{ er.groupName }}</option>
+                                    </ng-container>
+                                </select>
+                            </td>
+                            <td class="flex flex-col justify-center items-center">
+                                <div class="py-2">
+                                    <button type="button" id="addExpertCEDACRole" (click)="addExpertRolesSelected()" class="btn btn-warning">
+                                        <icon-carets-down class="-rotate-90 rtl:-rotate-90" />
+                                        Asignar
+                                    </button>
+                                </div>
+                                <div class="py-2">
+                                    <button type="button" id="removeExpertCEDACRole" (click)="removeExpertRolesSelected()" class="btn btn-warning">
+                                        Remover
+                                        <icon-carets-down class="rotate-90 rtl:-rotate-90" />
+                                    </button>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <select #selectedExpertCEDACRoles class="form-multiselect text-white-dark" multiple>
+                                    <ng-container *ngFor="let er of expertRoles">
+                                        <option *ngIf="er.active">{{ er.groupName }}</option>
+                                    </ng-container>
+                                </select>
+                            </td>
+                            <td class="text-center"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"></td>
+                            <td class="text-center"><span class="font-bold">Roles CEDAC</span></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"><span class="font-bold">Roles Usuario</span></td>
+                            <td class="text-center"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <span class="font-bold"
+                                    >Otros <br />
+                                    Roles</span
+                                >
+                            </td>
+                            <td class="text-center">
+                                <select #cedacRolesSelect class="form-multiselect text-white-dark h-[7.4rem]" multiple>
+                                    <ng-container *ngFor="let cr of cedacRoles">
+                                        <option *ngIf="!cr.active" [value]="cr.groupName">{{ cr.groupName }}</option>
+                                    </ng-container>
+                                </select>
+                            </td>
+                            <td class="flex flex-col justify-center items-center">
+                                <div class="py-2">
+                                    <button type="button" (click)="addCedacRolesSelected()" class="btn btn-warning">
+                                        <icon-carets-down class="-rotate-90 rtl:-rotate-90" />
+                                        Asignar
+                                    </button>
+                                </div>
+                                <div class="py-2">
+                                    <button type="button" (click)="removeCedacRolesSelected()" class="btn btn-warning">
+                                        Remover
+                                        <icon-carets-down class="rotate-90 rtl:-rotate-90" />
+                                    </button>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <select #selectedCedacRoles class="form-multiselect text-white-dark" multiple>
+                                    <ng-container *ngFor="let cr of cedacRoles">
+                                        <option *ngIf="cr.active" [value]="cr.groupName">{{ cr.groupName }}</option>
+                                    </ng-container>
+                                </select>
+                            </td>
+                            <td class="text-center"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="flex justify-end mt-5">
+                    <div class="pr-2">
+                        <button type="button" class="btn btn-success">Guardar Cambios</button>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-danger">Regresar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

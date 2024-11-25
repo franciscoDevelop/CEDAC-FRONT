@@ -2,7 +2,7 @@ export interface UserEditInterface {
     data: {
         user: {
             name: string;
-            active: number;
+            active: string;
             password: string;
             phone: string;
             email: string;

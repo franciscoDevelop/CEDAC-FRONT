@@ -14,7 +14,7 @@ export class FormComponent implements OnInit {
         { name: 'ADMINISTRACIÓN DE USUARIOS', link: '/administracion/usuarios' },
         { name: 'CREAR USUARIO', link: '/administracion/usuarios/nuevo' },
     ];
-    title: string = 'Usuario';
+    title: string = 'U s u a r i o';
     rpe: string | undefined;
     user!: UserEditInterface;
 

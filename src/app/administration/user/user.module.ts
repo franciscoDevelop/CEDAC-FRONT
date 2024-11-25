@@ -19,7 +19,7 @@ const routes: Routes = [
     },
     { path: 'usuarios/nuevo', component: FormComponent, data: { title: 'Modificar usuario' } },
     { path: 'usuarios/:id/editar', component: FormComponent, data: { title: 'Modificar usuario' } },
-    { path: 'usuarios/asignar-roles', component: RolesComponent, data: { title: 'Asignar roles a usuario' } },
+    { path: 'usuarios/:id/asignar-roles', component: RolesComponent, data: { title: 'Asignar roles a usuario' } },
     { path: 'usuarios/:id/modificar-roles', component: RolesComponent, data: { title: 'Modificar roles a usuario' } },
 ];
 

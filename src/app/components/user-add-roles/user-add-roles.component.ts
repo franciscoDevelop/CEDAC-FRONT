@@ -23,12 +23,12 @@ export class UserAddRolesComponent implements OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes['userDetail'] && changes['userDetail'].currentValue) {
+        if (changes['userDetail']?.currentValue) {
             this.roles = this.userDetail.data.roles;
         }
     }
 
     showButton(group: string) {
-        return group.startsWith('EXPERTO') || group === 'COORDINACION' ? true : false;
+        return group.startsWith('EXPERTO') || group === 'COORDINACION';
     }
 }

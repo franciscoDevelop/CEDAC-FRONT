@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AlertService } from 'src/app/core/services/alert.service';
@@ -33,7 +33,7 @@ export class UserFormComponent implements OnChanges {
     sirhInfo!: string;
 
     constructor(
-        private alertService: AlertService,
+        private readonly alertService: AlertService,
         private readonly userService: UserService,
         private readonly router: Router,
         private readonly fb: FormBuilder,
@@ -42,8 +42,7 @@ export class UserFormComponent implements OnChanges {
         this.initForm();
     }
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes['userDetail'] && changes['userDetail'].currentValue) {
-
+        if (changes['userDetail']?.currentValue) {
             this.form.get('user.rpe')?.disable();
             this.form.patchValue({
                 user: {
@@ -54,7 +53,11 @@ export class UserFormComponent implements OnChanges {
                     costCenter: !Number.isNaN(Number(this.userDetail.data.user.costCenter))
                         ? Number(this.userDetail.data.user.costCenter)
                         : this.userDetail.data.user.costCenter,
-                    active: this.userDetail.data.user.active === 1,
+                    active: this.userDetail.data.user.active === '1',
+                },
+                privileges: {
+                    autps: this.userDetail.data.haveProfile.autps,
+                    autdoc: this.userDetail.data.haveProfile.autdoc,
                 },
             });
             this.society = this.userDetail.data.user.society;
@@ -81,6 +84,10 @@ export class UserFormComponent implements OnChanges {
                 costCenter: ['', Validators.required],
                 active: [true],
             }),
+            privileges: this.fb.group({
+                autps: [false],
+                autdoc: [false],
+            }),
             justification: ['', Validators.required],
         });
     }
@@ -88,7 +95,7 @@ export class UserFormComponent implements OnChanges {
     loadCostCenter(event: FocusEvent): void {
         const input = event.target as HTMLInputElement;
         const costCenterValue = input.value;
-        // Add your logic to handle the cost center value
+
         this.profitSocietyCenterService.getProfitSocietyCenter(costCenterValue).subscribe((response: ProfitSocietyCenterInterface) => {
             this.society = response.society;
             this.tsociety = response.tsociety;
@@ -110,12 +117,11 @@ export class UserFormComponent implements OnChanges {
             if (phoneControl && !phoneControl.value) {
                 phoneControl.setValue('-');
             }
-            this.userService.registerUser(this.form.value).subscribe(
-                (res) => {
-                    this.alertService.success();
+            this.userService.registerUser(this.form.value).subscribe({
+                next: (res) => {
                     this.router.navigate(['/administracion/usuarios']);
                 },
-                (error: HttpErrorResponse) => {
+                error: (error: HttpErrorResponse) => {
                     if (error.status === 400) {
                         console.error('Bad Request:', error.message);
                     } else if (error.status === 401) {
@@ -128,7 +134,11 @@ export class UserFormComponent implements OnChanges {
                         console.error('An unexpected error occurred:', error.message);
                     }
                 },
-            );
+                complete: () => {
+                    this.alertService.success();
+                    console.log('User registration completed');
+                },
+            });
         }
     }
 }

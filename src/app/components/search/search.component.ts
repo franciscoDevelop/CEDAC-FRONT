@@ -15,7 +15,15 @@ export class SearchComponent {
     @Input() searchText!: string;
     @Output() search = new EventEmitter<string>();
 
-    focus: boolean = false;
+    focus: boolean;
+
+    constructor() {
+        if (this.searchText == '') {
+            this.focus = false;
+        } else {
+            this.focus = true;
+        }
+    }
 
     onSearch(event: Event) {
         event.preventDefault();

@@ -12,7 +12,8 @@ import { routes } from './app.route';
 import { AppComponent } from './app.component';
 
 // store
-import { StoreModule } from '@ngrx/store';
+import { ActionReducer, StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { indexReducer } from './store/index.reducer';
 
 // shared module
@@ -59,6 +60,14 @@ import { HeaderComponent } from './layouts/header';
 import { FooterComponent } from './layouts/footer';
 import { SidebarComponent } from './layouts/sidebar';
 import { ThemeCustomizerComponent } from './layouts/theme-customizer';
+import { profitsReducer } from './store/profit.reducer';
+import { localStorageSync } from 'ngrx-store-localstorage';
+import { environment } from 'src/environments/environment';
+import { justificationReducer, modulesReducer } from './store/reducers';
+
+export function localStorageSyncReducer(reducer: ActionReducer<any>) {
+    return localStorageSync({ keys: ['profits'], rehydrate: true })(reducer);
+}
 
 @NgModule({
     imports: [
@@ -75,7 +84,13 @@ import { ThemeCustomizerComponent } from './layouts/theme-customizer';
                 deps: [HttpBackend],
             },
         }),
-        StoreModule.forRoot({ index: indexReducer }),
+        StoreModule.forRoot({
+            index: indexReducer,
+            profits: localStorageSyncReducer(profitsReducer),
+            modules: localStorageSyncReducer(modulesReducer),
+            justification: localStorageSyncReducer(justificationReducer)
+        }),
+        StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
         SharedModule.forRoot(),
     ],
     declarations: [

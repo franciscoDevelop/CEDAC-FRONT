@@ -5,14 +5,14 @@
             <h5 class="text-lg font-semibold dark:text-white-light">{{ title }}</h5>
         </div>
         <div class="mb-5">
-            <form>
+            <form [formGroup]="rolesForm" (ngSubmit)="onSubmit()">
                 <div class="sm:flex justify-between items-center gap-5 md:gap-20">
                     <label for="rpeInput" class="w-16">RPE:</label>
-                    <input id="rpeInput" type="text" class="form-input border-none focus:outline-none" [value]="rpe" readonly />
+                    <input id="rpeInput" formControlName="rpe" type="text" class="form-input border-none focus:outline-none" readonly />
                 </div>
                 <div class="sm:flex justify-between items-center gap-5 md:gap-20 mt-1">
                     <label for="nameInput" class="w-16">Nombre:</label>
-                    <input id="nameInput" type="text" class="form-input border-none focus:outline-none" [value]="userName" readonly />
+                    <input id="nameInput" formControlName="name" type="text" class="form-input border-none focus:outline-none" readonly />
                 </div>
                 <table>
                     <thead>
@@ -41,11 +41,23 @@
                                 >
                             </td>
                             <td class="text-center">
-                                <select #expertCEDACRoles class="form-multiselect text-white-dark" multiple>
+                                <div class="flex flex-col rounded-md border border-[#e0e6ed] dark:border-[#1b2e4b]">
                                     <ng-container *ngFor="let er of expertRoles">
-                                        <option *ngIf="!er.active" [value]="er.groupName">{{ er.groupName }}</option>
+                                        <div
+                                            *ngIf="!er.active"
+                                            class="flex space-x-4 rtl:space-x-reverse border-b border-[#e0e6ed] dark:border-[#1b2e4b] px-4 py-2.5 hover:bg-[#eee] dark:hover:bg-[#eee]/10"
+                                        >
+                                            <input
+                                                #expertCEDACRoles
+                                                id="expertCDCRoles-{{ er.groupName }}"
+                                                [value]="er.groupName"
+                                                type="checkbox"
+                                                class="form-checkbox"
+                                            />
+                                            <label for="expertCDCRoles-{{ er.groupName }}" class="mb-0 cursor-pointer">{{ er.groupName }} </label>
+                                        </div>
                                     </ng-container>
-                                </select>
+                                </div>
                             </td>
                             <td class="flex flex-col justify-center items-center">
                                 <div class="py-2">
@@ -62,11 +74,30 @@
                                 </div>
                             </td>
                             <td class="text-center">
-                                <select #selectedExpertCEDACRoles class="form-multiselect text-white-dark" multiple>
+                                <div class="flex flex-col rounded-md border border-[#e0e6ed] dark:border-[#1b2e4b]">
                                     <ng-container *ngFor="let er of expertRoles">
-                                        <option *ngIf="er.active">{{ er.groupName }}</option>
+                                        <div
+                                            *ngIf="er.active"
+                                            class="flex space-x-4 rtl:space-x-reverse border-b border-[#e0e6ed] dark:border-[#1b2e4b] px-4 py-2.5 hover:bg-[#eee] dark:hover:bg-[#eee]/10"
+                                        >
+                                            <input
+                                                #selectedExpertCEDACRoles
+                                                id="selectedExpertCDCRoles-{{ er.groupName }}"
+                                                [value]="er.groupName"
+                                                type="checkbox"
+                                                class="form-checkbox"
+                                                [disabled]="isDisabled(er)"
+                                            />
+                                            <label
+                                                for="selectedExpertCDCRoles-{{ er.groupName }}"
+                                                class="mb-0 cursor-pointer"
+                                                [ngClass]="isDisabled(er) ? 'text-danger' : ''"
+                                                [ngxTippy]="isDisabled(er) ? tooltipMessage : null"
+                                                >{{ er.groupName }}
+                                            </label>
+                                        </div>
                                     </ng-container>
-                                </select>
+                                </div>
                             </td>
                             <td class="text-center"></td>
                         </tr>
@@ -88,11 +119,23 @@
                                 >
                             </td>
                             <td class="text-center">
-                                <select #cedacRolesSelect class="form-multiselect text-white-dark h-[7.4rem]" multiple>
+                                <div class="flex flex-col rounded-md border border-[#e0e6ed] dark:border-[#1b2e4b]">
                                     <ng-container *ngFor="let cr of cedacRoles">
-                                        <option *ngIf="!cr.active" [value]="cr.groupName">{{ cr.groupName }}</option>
+                                        <div
+                                            *ngIf="!cr.active"
+                                            class="flex space-x-4 rtl:space-x-reverse border-b border-[#e0e6ed] dark:border-[#1b2e4b] px-4 py-2.5 hover:bg-[#eee] dark:hover:bg-[#eee]/10"
+                                        >
+                                            <input
+                                                #cedacRolesSelect
+                                                id="cedacCDCRoles-{{ cr.groupName }}"
+                                                [value]="cr.groupName"
+                                                type="checkbox"
+                                                class="form-checkbox"
+                                            />
+                                            <label for="cedacCDCRoles-{{ cr.groupName }}" class="mb-0 cursor-pointer">{{ cr.groupName }} </label>
+                                        </div>
                                     </ng-container>
-                                </select>
+                                </div>
                             </td>
                             <td class="flex flex-col justify-center items-center">
                                 <div class="py-2">
@@ -109,22 +152,51 @@
                                 </div>
                             </td>
                             <td class="text-center">
-                                <select #selectedCedacRoles class="form-multiselect text-white-dark" multiple>
+                                <div class="flex flex-col rounded-md border border-[#e0e6ed] dark:border-[#1b2e4b]">
                                     <ng-container *ngFor="let cr of cedacRoles">
-                                        <option *ngIf="cr.active" [value]="cr.groupName">{{ cr.groupName }}</option>
+                                        <div
+                                            *ngIf="cr.active"
+                                            class="flex space-x-4 rtl:space-x-reverse border-b border-[#e0e6ed] dark:border-[#1b2e4b] px-4 py-2.5 hover:bg-[#eee] dark:hover:bg-[#eee]/10"
+                                        >
+                                            <input
+                                                #selectedCedacRoles
+                                                id="cedacCDCRoles-{{ cr.groupName }}"
+                                                [value]="cr.groupName"
+                                                type="checkbox"
+                                                class="form-checkbox"
+                                            />
+                                            <label for="cedacCDCRoles-{{ cr.groupName }}" class="mb-0 cursor-pointer">{{ cr.groupName }} </label>
+                                        </div>
                                     </ng-container>
-                                </select>
+                                </div>
                             </td>
                             <td class="text-center"></td>
                         </tr>
                     </tbody>
                 </table>
+                <div [ngClass]="isSubmitForm ? (rolesForm.controls['justification'].errors ? 'has-error pt-3' : 'has-success pt-3') : 'pt-3'">
+                    <label for="justificationTextArea">Justificación</label>
+                    <textarea
+                        id="justificationTextArea"
+                        rows="3"
+                        class="form-textarea"
+                        formControlName="justification"
+                        (blur)="setJustificationArea($event)"
+                        placeholder="En caso de hacer alguna modificación describa detalladamente la razón por la que hará dicho cambio . . ."
+                    ></textarea>
+                    <ng-container *ngIf="isSubmitForm && !rolesForm.controls['justification'].errors">
+                        <span class="rounded bg-[#1abc9c] py-1 px-2 text-white">Perfecto!</span>
+                    </ng-container>
+                    <ng-container *ngIf="isSubmitForm && rolesForm.controls['justification'].errors">
+                        <span class="rounded bg-danger py-1 px-2 text-white">Ingresa la Justificación</span>
+                    </ng-container>
+                </div>
                 <div class="flex justify-end mt-5">
                     <div class="pr-2">
-                        <button type="button" class="btn btn-success">Guardar Cambios</button>
+                        <button type="submit" class="btn btn-success">Guardar Cambios</button>
                     </div>
                     <div>
-                        <button type="button" class="btn btn-danger">Regresar</button>
+                        <a routerLink="/administracion/usuarios/{{rpe}}/editar" class="btn btn-danger">Regresar</a>
                     </div>
                 </div>
             </form>

@@ -1,13 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
-import { AlertService } from 'src/app/core/services/alert.service';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { ProfitSocietyCenterService } from 'src/app/service/profit-society-center-service.service';
-import { UserService } from 'src/app/service/user.service';
+import { setJustification } from 'src/app/store/actions';
+import { Adscription } from 'src/interface/adscription';
 import { ProfitSocietyCenterInterface } from 'src/interface/profit-society-center-interface';
-import { UserEditInterface } from 'src/interface/user-edit-interface';
 
 @Component({
     selector: 'app-user-form',
@@ -16,129 +15,47 @@ import { UserEditInterface } from 'src/interface/user-edit-interface';
     templateUrl: './user-form.component.html',
     styleUrl: './user-form.component.css',
 })
-export class UserFormComponent implements OnChanges {
+export class UserFormComponent {
     @Input() title!: string;
-    @Input() userDetail!: UserEditInterface;
-    @Input() userRpe!: string | undefined;
+    @Input() showPrivileges!: boolean;
+    @Input() edit!: boolean;
+    @Input() sapInfo!: string;
+    @Input() sirhInfo!: string;
+    @Input() adscription!: Adscription;
+    @Input() form!: FormGroup;
+    @Input() isSubmitForm!: boolean;
 
-    form!: FormGroup;
-    isSubmitForm = false;
-
-    society!: string;
-    tsociety!: string;
-    profitCenter!: string;
-    tprofitCenter!: string;
-    tcostCenter!: string;
-    sapInfo!: string;
-    sirhInfo!: string;
+    @Output() onSubmitForm: EventEmitter<FormGroup> = new EventEmitter<FormGroup>();
 
     constructor(
-        private readonly alertService: AlertService,
-        private readonly userService: UserService,
-        private readonly router: Router,
-        private readonly fb: FormBuilder,
         private readonly profitSocietyCenterService: ProfitSocietyCenterService,
-    ) {
-        this.initForm();
-    }
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes['userDetail']?.currentValue) {
-            this.form.get('user.rpe')?.disable();
-            this.form.patchValue({
-                user: {
-                    rpe: this.userRpe,
-                    name: this.userDetail.data.user.name,
-                    email: this.userDetail.data.user.email,
-                    phone: this.userDetail.data.user.phone,
-                    costCenter: !Number.isNaN(Number(this.userDetail.data.user.costCenter))
-                        ? Number(this.userDetail.data.user.costCenter)
-                        : this.userDetail.data.user.costCenter,
-                    active: this.userDetail.data.user.active === '1',
-                },
-                privileges: {
-                    autps: this.userDetail.data.haveProfile.autps,
-                    autdoc: this.userDetail.data.haveProfile.autdoc,
-                },
-            });
-            this.society = this.userDetail.data.user.society;
-            this.tsociety = this.userDetail.data.user.tsociety;
-            this.profitCenter = this.userDetail.data.user.profitCenter;
-            this.tprofitCenter = this.userDetail.data.user.tprofitCenter;
-            this.tcostCenter = this.userDetail.data.user.tcostCenter;
-            this.sirhInfo = this.userDetail.data.user.sirh;
-            this.sapInfo = this.userDetail.data.user.sapuser;
-        } else {
-            this.form.reset();
-        }
-    }
-
-    initForm() {
-        this.form = this.fb.group({
-            user: this.fb.group({
-                rpe: ['', Validators.required],
-                coordinatorRPE: ['2B366'],
-                name: ['', Validators.required],
-                email: ['', [Validators.required, Validators.email]],
-                society: [''],
-                phone: [''],
-                costCenter: ['', Validators.required],
-                active: [true],
-            }),
-            privileges: this.fb.group({
-                autps: [false],
-                autdoc: [false],
-            }),
-            justification: ['', Validators.required],
-        });
-    }
+        private readonly store: Store<any>,
+    ) {}
 
     loadCostCenter(event: FocusEvent): void {
         const input = event.target as HTMLInputElement;
         const costCenterValue = input.value;
 
         this.profitSocietyCenterService.getProfitSocietyCenter(costCenterValue).subscribe((response: ProfitSocietyCenterInterface) => {
-            this.society = response.society;
-            this.tsociety = response.tsociety;
-            this.profitCenter = response.profitCenter;
-            this.tprofitCenter = response.tprofitCenter;
-            this.tcostCenter = response.tcostCenter;
+            this.adscription.society = response.society;
+            this.adscription.tsociety = response.tsociety;
+            this.adscription.profitCenter = response.profitCenter;
+            this.adscription.tprofitCenter = response.tprofitCenter;
+            this.adscription.tcostCenter = response.tcostCenter;
             this.form.patchValue({
-                user: {
-                    society: response.society,
-                },
+                society: response.society,
             });
         });
     }
 
+    setJustificationArea(event: FocusEvent): void {
+        const input = event.target as HTMLTextAreaElement;
+        const justificationValue = input.value;
+
+        this.store.dispatch(setJustification({ justification: justificationValue }));
+    }
+
     onSubmit(): void {
-        this.isSubmitForm = true;
-        if (this.form.valid) {
-            const phoneControl = this.form.get('user.phone');
-            if (phoneControl && !phoneControl.value) {
-                phoneControl.setValue('-');
-            }
-            this.userService.registerUser(this.form.value).subscribe({
-                next: (res) => {
-                    this.router.navigate(['/administracion/usuarios']);
-                },
-                error: (error: HttpErrorResponse) => {
-                    if (error.status === 400) {
-                        console.error('Bad Request:', error.message);
-                    } else if (error.status === 401) {
-                        console.error('Unauthorized:', error.message);
-                    } else if (error.status === 500) {
-                        console.error('Internal Server Error:', error.message);
-                    } else if (error.status === 409) {
-                        this.alertService.submitFail({ text: error.error.error });
-                    } else {
-                        console.error('An unexpected error occurred:', error.message);
-                    }
-                },
-                complete: () => {
-                    this.alertService.success();
-                    console.log('User registration completed');
-                },
-            });
-        }
+        this.onSubmitForm.emit(this.form);
     }
 }

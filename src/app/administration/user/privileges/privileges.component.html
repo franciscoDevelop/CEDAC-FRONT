@@ -1,0 +1,132 @@
+<app-breadcrumb [breadcrumbs]="breadcrumbs"></app-breadcrumb>
+<div class="pt-6">
+    <div class="panel">
+        <div class="mb-5 flex items-center justify-center">
+            <h5 class="text-lg font-semibold dark:text-white-light">{{ title }}</h5>
+        </div>
+        <div class="mb-5">
+            <h6>RPE: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ rpe }}</h6>
+            <h6>USUARIO: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ userInfo }}</h6>
+            <h6>SOCIEDAD: &nbsp;&nbsp;&nbsp; {{ societyInfo }}</h6>
+            <h6>C BENEFICIO: {{ profitCenterInfo }}</h6>
+        </div>
+        <div class="mb-5">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                <div class="table-responsive">
+                    <table class="w-auto border border-white-dark border-collapse">
+                        <thead>
+                            <tr>
+                                <th colspan="2" class="text-center bg-gray-200 h-6 dark:bg-white-dark dark:text-white-light">
+                                    <strong>P e r m i s o s:</strong>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" class="form-checkbox" formControlName="internalProcess" [disabled]="checkDisabled()" />
+                                </td>
+                                <td>Con autorización para utilizar Procesos Internos</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" class="form-checkbox" formControlName="levelDown" />
+                                </td>
+                                <td>Con autorización para Bajar a Niveles Inferiores</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" class="form-checkbox" formControlName="scale" />
+                                </td>
+                                <td>Con autorización para Escalación de Solicitudes</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" class="form-checkbox" formControlName="solve" />
+                                </td>
+                                <td>Con autorización para Solución de Solicitudes</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" class="form-checkbox" formControlName="supervisor" (change)="onChangeSupervisor($event)" />
+                                </td>
+                                <td>
+                                    Asignar experto como Supervisor
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" class="form-checkbox" formControlName="administration" (change)="onChageAdminUser($event)" />
+                                            </td>
+                                            <td>Acceder a la Administración de Usuarios</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-responsive mt-10">
+                    <table class="w-full border border-white-dark border-collapse">
+                        <thead>
+                            <tr>
+                                <th class="text-center" [hidden]="isHiden()">{{ listOne }}</th>
+                                <th class="text-center">{{ listTwo }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td [hidden]="isHiden()">
+                                    <select id="soccb" size="6" class="form-multiselect text-white-dark !bg-none">
+                                        <option *ngFor="let lprofit of listProfits">{{ getProfitName(lprofit) }}</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select id="soccb" size="6" class="form-multiselect text-white-dark !bg-none">
+                                        <option *ngFor="let lmods of listModules">{{ lmods.label }}</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td [hidden]="isHiden()">
+                                    <div class="flex justify-center items-center">
+                                        <a routerLink="/administracion/usuarios/{{ rpe }}/modificar-centro-beneficio/{{ role }}" class="btn btn-outline-info"
+                                            >Modificar Centros de Beneficio</a
+                                        >
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="flex justify-center items-center">
+                                        <a routerLink="/administracion/usuarios/{{ rpe }}/modificar-modulos/{{ role }}" class="btn btn-outline-info">Modificar Módulos</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="flex flex-col justify-between h-full pt-10">
+                    <div [ngClass]="isSubmitForm ? (form.controls['justification'].errors ? 'has-error' : '') : ''">
+                        <label for="justificationTextArea">Justificación</label>
+                        <textarea
+                            id="justificationTextArea"
+                            rows="3"
+                            class="form-textarea"
+                            formControlName="justification"
+                            (blur)="setJustificationArea($event)"
+                            placeholder="En caso de hacer alguna modificación describa detalladamente la razón por la que hará dicho cambio . . ."
+                        ></textarea>
+                        <ng-container *ngIf="isSubmitForm && form.controls['justification'].errors">
+                            <span class="rounded bg-danger py-1 px-2 text-white">Ingresa la Justificación</span>
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="flex justify-end">
+                    <div class="inline-flex">
+                        <button type="submit" class="btn btn-success !mt-6 mr-4">Guardar Cambios</button>
+                        <a routerLink="/administracion/usuarios/{{rpe}}/editar" class="btn btn-danger !mt-6 cursor-pointer">Regresar</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<app-loader *ngIf="isLoading"></app-loader>

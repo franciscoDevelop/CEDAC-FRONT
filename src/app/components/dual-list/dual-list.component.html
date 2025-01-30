@@ -1,0 +1,40 @@
+<div class="flex justify-between p-4 space-x-4">
+    <div class="w-1/2">
+        <h4 class="text-base font-semibold">{{ listLabelOne }}</h4>
+        <input type="text" [(ngModel)]="filterText" [placeholder]="placeHolderSearch" class="border border-gray-300 rounded p-2 mb-2 w-full" />
+        <ul class="border border-gray-300 rounded h-40 overflow-auto">
+            <li
+                *ngFor="let item of availableItems | filter: filterText"
+                (click)="selectItem(item)"
+                (keydown)="onKeyDown($event, item)"
+                [ngClass]="{ 'bg-gray-200': selectedForTransfer.has(item) }"
+                class="cursor-pointer py-1 px-2"
+            >
+                {{ item.label }}
+            </li>
+        </ul>
+    </div>
+
+    <div class="flex flex-col justify-center mt-6">
+        <button (click)="addItem()" class="bg-gray-500 text-white rounded py-2 px-4 mb-2 hover:bg-gray-400">Agregar >></button>
+        <button (click)="addAllItems()" class="bg-gray-300 text-white rounded py-2 px-4 mb-2 hover:bg-gray-200">Agregar Todo</button>
+        <button (click)="removeItem()" class="bg-gray-500 text-white rounded py-2 px-4 mb-2 hover:bg-gray-400"><< Quitar</button>
+        <button (click)="removeAllItems()" class="bg-gray-300 text-white rounded py-2 px-4 hover:bg-gray-200">Quitar Todo</button>
+    </div>
+
+    <div class="w-1/2">
+        <h4 class="text-base font-semibold">{{ listLabelTwo }}</h4>
+        <input type="text" [(ngModel)]="filterSelectedText" [placeholder]="placeHolderSearch" class="border border-gray-300 rounded p-2 mb-2 w-full" />
+        <ul class="border border-gray-300 rounded h-40 overflow-auto">
+            <li
+                *ngFor="let item of selectedItems | filter: filterSelectedText"
+                (click)="selectItem(item)"
+                (keydown)="onKeyDown($event, item)"
+                [ngClass]="{ 'bg-gray-200': selectedForTransfer.has(item) }"
+                class="cursor-pointer py-1 px-2"
+            >
+                {{ item.label }}
+            </li>
+        </ul>
+    </div>
+</div>

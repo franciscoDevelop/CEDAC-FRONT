@@ -1,0 +1,110 @@
+<app-breadcrumb [breadcrumbs]="breadcrumbs"></app-breadcrumb>
+<div class="pt-6">
+    <div class="panel">
+        <div class="grid grid-cols-1 gap-4">
+            <p>
+                :: La seleccion de Centros de Beneficio (C.B) de un usuario se compone de varios pasos: <br />
+                1. Seleccionar las sociedades que contengan los Centros de Beneficio deseados. :: (Ej. Para Centro de Beneficio
+                <span class="text-red-600">D043 | Zona Hermosillo de Distribución Noroeste</span> seleccionar Sociedad
+                <span class="text-red-600">D000 | Distribución Noroeste</span>) <br />
+                2. Oprimir el botón Filtrar sociedades para que se muestren los Centros de Beneficios correspondientes a las sociedades seleccionadas. <br />
+                3. Seleccionar los Centros de Beneficio de interés. <br />
+                4. Presionar el botón Aceptar. <br />5. Finalmente deberá indicar en qué Centros de Beneficio el Experto Regional actuará como Experto Local.
+            </p>
+        </div>
+    </div>
+</div>
+<div class="pt-6">
+    <div class="panel">
+        <div class="grid grid-cols-1 gap-4">
+            <app-dual-list
+                placeHolderSearch="Buscar Sociedad:"
+                listLabelOne="Sociedades disponibles:"
+                listLabelTwo="Sociedades seleccionadas:"
+                [availableItems]="listSocieties"
+                [selectedItems]="selectedSocieties"
+                (selectedItemsChange)="onSelectedItemsChangeSoc($event)"
+            >
+            </app-dual-list>
+        </div>
+        <div class="grid grid-cols-3 gap-4">
+            <div></div>
+            <div class="flex justify-center">
+                <button class="bg-gray-500 text-white rounded py-2 px-4 hover:bg-gray-400" (click)="onFilterProfits()">Filtrar Sociedades</button>
+            </div>
+            <div></div>
+        </div>
+        <div class="grid grid-cols-1 gap-4">
+            <app-dual-list
+                placeHolderSearch="Buscar Centro de Beneficio:"
+                listLabelOne="C. de Beneficio de filtro de sociedades:"
+                listLabelTwo="C. de Beneficio seleccionados:"
+                [availableItems]="listProfits"
+                [selectedItems]="selectedProfits"
+                (selectedItemsChange)="onSelectedItemsChangePro($event)"
+            >
+            </app-dual-list>
+        </div>
+        <div class="grid grid-cols-1 gap-4">
+            <div class="flex justify-center">
+                <div class="pr-3">
+                    <button class="bg-gray-500 text-white rounded py-2 px-4 hover:bg-gray-400" (click)="openModal()">Aceptar</button>
+                </div>
+                <div class="pt-2">
+                    <a
+                        routerLink="/administracion/usuarios/{{ rpe }}/modificar-roles/{{ role }}"
+                        class="bg-gray-500 text-white rounded py-2 px-4 hover:bg-gray-400"
+                        >Cancelar</a
+                    >
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-loader *ngIf="isLoading"></app-loader>
+<ngx-custom-modal
+    #modalChange
+    [closeOnOutsideClick]="false"
+    class="modal-top extra-large-modal"
+>
+    <ng-template #modalHeader> <div>CENTROS DE BENEFICIO:</div> </ng-template>
+    <ng-template #modalBody>
+        <p class="pb-1">:: Seleccione [] cuales de los siguientes Centros de Beneficio tomarán el papel de filtrado como EXPERTO LOCAL:</p>
+
+        <div class="flex justify-left items-center">
+            <label class="w-12 h-6 relative">
+                <input
+                    type="checkbox"
+                    class="custom_switch absolute w-full h-full opacity-0 z-10 cursor-pointer peer"
+                    [checked]="selectAllChecked"
+                    (change)="toggleSelectAll()"
+                />
+                <span
+                    class="outline_checkbox bg-icon border-2 border-[#ebedf2] dark:border-white-dark block h-full rounded-full before:absolute before:left-1 before:bg-[#ebedf2] dark:before:bg-white-dark before:bottom-1 before:w-4 before:h-4 before:rounded-full before:bg-[url(/assets/images/close.svg)] before:bg-no-repeat before:bg-center peer-checked:before:left-7 peer-checked:before:bg-[url(/assets/images/checked.svg)] peer-checked:border-primary peer-checked:before:bg-primary before:transition-all before:duration-300"
+                >
+                </span>
+            </label>
+            <label class="pl-1">Seleccionar todo</label>
+        </div>
+
+        <div class="flex justify-left items-center" *ngFor="let item of selectedProfits">
+            <label class="w-12 h-6 relative">
+                <input
+                    type="checkbox"
+                    class="custom_switch absolute w-full h-full opacity-0 z-10 cursor-pointer peer"
+                    [checked]="item.local"
+                    (change)="toggleLocal(item)"
+                />
+                <span
+                    class="outline_checkbox bg-icon border-2 border-[#ebedf2] dark:border-white-dark block h-full rounded-full before:absolute before:left-1 before:bg-[#ebedf2] dark:before:bg-white-dark before:bottom-1 before:w-4 before:h-4 before:rounded-full before:bg-[url(/assets/images/close.svg)] before:bg-no-repeat before:bg-center peer-checked:before:left-7 peer-checked:before:bg-[url(/assets/images/checked.svg)] peer-checked:border-primary peer-checked:before:bg-primary before:transition-all before:duration-300"
+                >
+                </span>
+            </label>
+            <label class="pl-1">{{ item.label }}</label>
+        </div>
+    </ng-template>
+    <ng-template #modalFooter>
+        <button type="button" (click)="modalChange.close()" class="btn btn-outline-danger">Cerrar</button>
+        <button type="button" (click)="onAccept()" class="btn btn-success ltr:ml-4 rtl:mr-4">Guardar cambios</button>
+    </ng-template>
+</ngx-custom-modal>

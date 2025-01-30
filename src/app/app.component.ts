@@ -9,9 +9,9 @@ import { filter, map, switchMap, tap } from 'rxjs/operators';
 })
 export class AppComponent {
     constructor(
-        private router: Router,
-        private activatedRoute: ActivatedRoute,
-        private titleService: Title,
+        private readonly router: Router,
+        private readonly activatedRoute: ActivatedRoute,
+        private readonly titleService: Title,
     ) {
         this.router.events
             .pipe(
@@ -32,7 +32,7 @@ export class AppComponent {
                 }),
                 tap((data: any) => {
                     let title = data.title;
-                    title = (title ? title + ' | ' : '') + 'VRISTO - Multipurpose Tailwind Dashboard Template';
+                    title = (title ? title + ' | ' : '') + 'CEDAC';
                     this.titleService.setTitle(title);
                 }),
             )

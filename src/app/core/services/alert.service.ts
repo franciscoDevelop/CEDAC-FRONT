@@ -66,6 +66,23 @@ export class AlertService {
         });
     }
 
+    mixinSuccess(rd: any = {}) {
+        const toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            padding: '2em',
+            customClass: rd.customClass || 'sweet-alerts'
+        });
+        return toast.fire({
+            icon: rd.icon || 'success',
+            title: rd.title || 'Envío exitoso',
+            padding: '2em',
+            customClass: rd.customClass || 'sweet-alerts'
+        });
+    }
+
     success(rd: any = {}) {
         return Swal.fire({
             icon: rd.icon || 'success',

@@ -1,7 +1,7 @@
 export interface CedacRolesInterface {
     data: {
         groupName: string;
-        active: boolean;
+        active: number;
     }[];
     TotalRecords: number;
     message: string;

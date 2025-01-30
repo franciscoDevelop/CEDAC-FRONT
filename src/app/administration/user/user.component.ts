@@ -1,11 +1,13 @@
 import { UserWithActionsInterface } from 'src/interface/user-with-actions-interface';
-import { AfterViewInit, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component } from '@angular/core';
 import { UserService } from 'src/app/service/user.service';
-import { UserResponse } from 'src/interface/user-response';
 import { TableConfig } from 'src/interface/table-config';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { BreadcrumbsInterface } from 'src/interface/breadcrumbs-interface';
 import { Router } from '@angular/router';
+import { PagedUserResponse } from 'src/interface/paged-user';
+import { ResponseData } from 'src/interface/response-data';
+import { SearchService } from 'src/app/service/search.service';
 
 @Component({
     selector: 'app-user',
@@ -25,7 +27,7 @@ export class UserComponent implements AfterViewInit {
             { label: 'ACCIONES', identifier: 'actions' },
         ],
         data: [],
-        pagination: { number: 0, totalPages: 0, totalElements: 0, size: 10 },
+        pagination: { number: 1, totalPages: 0, totalElements: 0, size: 10 },
         search: { show: true, placeholder: 'Buscar...', searchText: '' },
         button: { label: 'Nuevo usuario', color: 'bg-success', icon: 'plus', link: '/administracion/usuarios/nuevo', show: true },
         show: {
@@ -40,6 +42,7 @@ export class UserComponent implements AfterViewInit {
         private readonly sanitizer: DomSanitizer,
         private readonly router: Router,
         private readonly cdr: ChangeDetectorRef,
+        private readonly searchService: SearchService
     ) {}
 
     ngAfterViewInit() {
@@ -50,10 +53,14 @@ export class UserComponent implements AfterViewInit {
     loadData() {
         this.isLoading = true;
         const { number, size } = this.userTableConfig.pagination;
-        const { searchText } = this.userTableConfig.search;
+        // const { searchText } = this.userTableConfig.search;
 
-        this.userService.getUsers(searchText, number, size).subscribe((response: UserResponse) => {
-            this.userTableConfig.data = response._embedded.tupleBackedMapList.map((item) => ({
+        this.userTableConfig.search.searchText = this.searchService.getSearchText();
+        console.log('searchText', this.searchService.getSearchText());
+
+
+        this.userService.getUsers(this.searchService.getSearchText(), number, size).subscribe((response: ResponseData<PagedUserResponse>) => {
+            this.userTableConfig.data = response.data.users.map((item) => ({
                 ...item,
                 rpe: item.rpe.toUpperCase(),
                 roles: this.separateRoles(item.roles),
@@ -61,10 +68,10 @@ export class UserComponent implements AfterViewInit {
                 actions: [{ tooltip: 'Editar', type: 'button', icon: 'edit', action: () => this.editUser(item.rpe) }],
             })) as UserWithActionsInterface[];
             this.userTableConfig.pagination = {
-                number: response.page.number,
-                size: response.page.size,
-                totalElements: response.page.totalElements,
-                totalPages: response.page.totalPages,
+                number: response.data.pageNumber,
+                size: response.data.pageSize,
+                totalElements: response.data.totalItems,
+                totalPages: response.data.totalPages,
             };
             this.isLoading = false;
         });
@@ -76,8 +83,9 @@ export class UserComponent implements AfterViewInit {
     }
 
     onSearchChange(searchText: string) {
-        this.userTableConfig.pagination.number = 0;
+        this.userTableConfig.pagination.number = 1;
         this.userTableConfig.search.searchText = searchText;
+        this.searchService.setSearchText(searchText);
         this.loadData();
     }
 

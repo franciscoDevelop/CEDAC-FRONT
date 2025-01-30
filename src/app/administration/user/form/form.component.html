@@ -1,5 +1,17 @@
 <app-breadcrumb [breadcrumbs]="breadcrumbs"></app-breadcrumb>
 <div class="pt-6">
-    <app-user-form [title]="title" [userDetail]="user" [userRpe]="rpe"></app-user-form>
+    <app-user-form
+        [edit]="edit"
+        [title]="title"
+        [form]="form"
+        [adscription]="adscription"
+        [sapInfo]="sapInfo"
+        [sirhInfo]="sirhInfo"
+        [showPrivileges]="showPrivileges"
+        (onSubmitForm)="onSubmit()"
+        [isSubmitForm]="isSubmitForm"
+    ></app-user-form>
 </div>
-<app-user-add-roles [userDetail]="user" [userRpe]="rpe"></app-user-add-roles>
+<div *ngIf="rpe">
+    <app-user-add-roles [userDetail]="user" [userRpe]="rpe"></app-user-add-roles>
+</div>

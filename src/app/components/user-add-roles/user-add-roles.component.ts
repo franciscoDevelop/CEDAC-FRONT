@@ -18,13 +18,11 @@ export class UserAddRolesComponent implements OnChanges {
 
     roles!: { rpe: string; groupUser: string }[];
 
-    constructor() {
-        console.log(this.roles);
-    }
+    constructor() {}
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['userDetail']?.currentValue) {
-            this.roles = this.userDetail.data.roles;
+            this.roles = this.userDetail.roles;
         }
     }
 

@@ -1,0 +1,43 @@
+<app-breadcrumb [breadcrumbs]="breadcrumbs"></app-breadcrumb>
+<div class="pt-6">
+    <div class="panel">
+        <div class="grid grid-cols-1 gap-4">
+            <p>
+                :: Seleccione de la lista de módulos disponibles y haga click en Agregar ». <br />
+                :: También puede eliminar módulos ya seleccionados haciendo click en « Quitar. <br />
+                :: Para aceptar los datos presione Aceptar Módulos.
+            </p>
+        </div>
+    </div>
+</div>
+<div class="pt-6">
+    <div class="panel">
+        <div class="grid grid-cols-1 gap-4">
+            <app-dual-list
+                placeHolderSearch="Buscar Módulo:"
+                listLabelOne="Módulos disponibles:"
+                listLabelTwo="Módulos seleccionados:"
+                [availableItems]="listModules"
+                [selectedItems]="selectedModules"
+                (selectedItemsChange)="onSelectedItemsChangeMod($event)"
+            >
+            </app-dual-list>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4">
+            <div class="flex justify-center">
+                <div class="pr-3">
+                    <button class="bg-gray-500 text-white rounded py-2 px-4 hover:bg-gray-400" (click)="onAccept()" >Aceptar</button>
+                </div>
+                <div class="pt-2">
+                    <a
+                        routerLink="/administracion/usuarios/{{ rpe }}/modificar-roles/{{ role }}"
+                        class="bg-gray-500 text-white rounded py-2 px-4 hover:bg-gray-400"
+                        >Cancelar</a
+                    >
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-loader *ngIf="isLoading"></app-loader>

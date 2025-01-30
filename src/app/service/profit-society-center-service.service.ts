@@ -8,10 +8,10 @@ import { ResponsePSCInterface } from 'src/interface/response-interface';
     providedIn: 'root',
 })
 export class ProfitSocietyCenterService {
-    constructor(private request: RequestService) {}
+    constructor(private readonly request: RequestService) {}
 
     getProfitSocietyCenter(costCenter: string): Observable<ProfitSocietyCenterInterface> {
-        const url = `/users/cost-center/${costCenter}`;
+        const url = `/users/adscription/${costCenter}`;
 
         return this.request.get<ResponsePSCInterface>(url).pipe(
             map((response: ResponsePSCInterface) => response.data)

@@ -5,17 +5,17 @@
     <div class="mb-5">
         <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-5" novalidate>
             <div>
-                <div formGroupName="user" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <div class="flex sm:flex-row flex-col" [ngClass]="isSubmitForm ? (form.get('user.rpe')?.errors ? 'has-error' : 'has-success') : ''">
+                        <div class="flex sm:flex-row flex-col" [ngClass]="isSubmitForm ? (form.get('rpe')?.errors ? 'has-error' : 'has-success') : ''">
                             <label for="rpeeject" class="mb-0 sm:w-28 sm:ltr:mr-2 rtl:ml-2">RPE:</label>
                             <input id="rpeeject" formControlName="rpe" type="text" placeholder="RPE" class="form-input w-40" />
                         </div>
                         <div class="pl-[7.5rem] mt-[0.28rem]">
-                            <ng-container *ngIf="isSubmitForm && !form.get('user.rpe')?.errors">
+                            <ng-container *ngIf="isSubmitForm && !form.get('rpe')?.errors">
                                 <span class="rounded bg-[#1abc9c] py-1 px-2 text-white">Perfecto!</span>
                             </ng-container>
-                            <ng-container *ngIf="isSubmitForm && form.get('user.rpe')?.errors">
+                            <ng-container *ngIf="isSubmitForm && form.get('rpe')?.errors">
                                 <span class="rounded bg-danger py-1 px-2 text-white">Ingresa el RPE</span>
                             </ng-container>
                         </div>
@@ -35,46 +35,43 @@
                         </label>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div formGroupName="user">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                    <div>
                         <div>
-                            <div
-                                class="flex sm:flex-row flex-col"
-                                [ngClass]="isSubmitForm ? (form.get('user.name')?.errors ? 'has-error' : 'has-success') : ''"
-                            >
+                            <div class="flex sm:flex-row flex-col" [ngClass]="isSubmitForm ? (form.get('name')?.errors ? 'has-error' : 'has-success') : ''">
                                 <label for="name" class="mb-0 sm:w-28 sm:ltr:mr-2 rtl:ml-2">Nombre:</label>
                                 <input id="name" type="text" formControlName="name" placeholder="Ingresa el Nombre" class="form-input flex-1" />
                             </div>
                             <div class="pl-[7.5rem] mt-[0.25rem]">
-                                <ng-container *ngIf="isSubmitForm && !form.get('user.name')?.errors">
+                                <ng-container *ngIf="isSubmitForm && !form.get('name')?.errors">
                                     <span class="rounded bg-[#1abc9c] py-1 px-2 text-white">Perfecto!</span>
                                 </ng-container>
-                                <ng-container *ngIf="isSubmitForm && form.get('user.name')?.errors">
+                                <ng-container *ngIf="isSubmitForm && form.get('name')?.errors">
                                     <span class="rounded bg-danger py-1 px-2 text-white">Ingresa el Nombre</span>
                                 </ng-container>
                             </div>
                         </div>
                         <div>
                             <div
-                                class="flex sm:flex-row flex-col"
-                                [ngClass]="isSubmitForm ? (form.get('user.email')?.errors ? 'has-error' : 'has-success') : ''"
+                                class="flex sm:flex-row flex-col pt-2"
+                                [ngClass]="isSubmitForm ? (form.get('email')?.errors ? 'has-error' : 'has-success') : ''"
                             >
                                 <label for="email" class="mb-0 sm:w-28 sm:ltr:mr-2 rtl:ml-2">Correo electrónico:</label>
                                 <input id="email" type="text" formControlName="email" placeholder="Ingresa el Correo electrónico" class="form-input flex-1" />
                             </div>
                             <div class="pl-[7.5rem] mt-[0.25rem]">
-                                <ng-container *ngIf="isSubmitForm && !form.get('user.email')?.errors">
+                                <ng-container *ngIf="isSubmitForm && !form.get('email')?.errors">
                                     <span class="rounded bg-[#1abc9c] py-1 px-2 text-white">Perfecto!</span>
                                 </ng-container>
-                                <ng-container *ngIf="isSubmitForm && form.get('user.email')?.errors">
+                                <ng-container *ngIf="isSubmitForm && form.get('email')?.errors">
                                     <span class="rounded bg-danger py-1 px-2 text-white"
                                         >{{
-                                            form.get('user.email')?.errors?.['required'] && !form.get('user.email')?.errors?.['email']
+                                            form.get('email')?.errors?.['required'] && !form.get('email')?.errors?.['email']
                                                 ? 'Ingresa el Correo Electrónico'
                                                 : ''
                                         }}
                                         {{
-                                            !form.get('user.email')?.errors?.['required'] && form.get('user.email')?.errors?.['email']
+                                            !form.get('email')?.errors?.['required'] && form.get('email')?.errors?.['email']
                                                 ? 'Ingresa un Correo Electrónico Valido'
                                                 : ''
                                         }}</span
@@ -82,39 +79,57 @@
                                 </ng-container>
                             </div>
                         </div>
-                        <div class="flex sm:flex-row flex-col">
+                        <div class="flex sm:flex-row flex-col pt-2">
                             <label for="phone" class="mb-0 sm:w-28 sm:ltr:mr-2 rtl:ml-2">Teléfono:</label>
                             <input id="phone" type="text" formControlName="phone" placeholder="Ingresa el teléfono" class="form-input flex-1" />
                         </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1" *ngIf="adscription.society">
                             <div class="flex sm:flex-row flex-col">
                                 <label for="society" class="mb-0 sm:w-28 sm:ltr:mr-2 rtl:ml-2">Sociedad:</label>
-                                <input id="society" type="text" class="form-input flex-1 border-none focus:outline-none" [value]="society" readonly />
+                                <input
+                                    id="society"
+                                    type="text"
+                                    class="form-input flex-1 border-none focus:outline-none"
+                                    [value]="adscription.society"
+                                    readonly
+                                />
                             </div>
                             <div class="flex sm:flex-row flex-col">
-                                <input id="tsociety" type="text" class="form-input flex-1 border-none focus:outline-none" [value]="tsociety" readonly />
+                                <input
+                                    id="tsociety"
+                                    type="text"
+                                    class="form-input flex-1 border-none focus:outline-none"
+                                    [value]="adscription.tsociety"
+                                    readonly
+                                />
                             </div>
                         </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1" *ngIf="adscription.profitCenter">
                             <div class="flex sm:flex-row flex-col">
                                 <label for="profitCenter" class="mb-0 sm:w-28 sm:ltr:mr-2 rtl:ml-2">Centro de Beneficio:</label>
-                                <input id="profitCenter" type="text" class="form-input flex-1 border-none focus:outline-none" [value]="profitCenter" readonly />
+                                <input
+                                    id="profitCenter"
+                                    type="text"
+                                    class="form-input flex-1 border-none focus:outline-none"
+                                    [value]="adscription.profitCenter"
+                                    readonly
+                                />
                             </div>
                             <div class="flex sm:flex-row flex-col">
                                 <input
                                     id="profitCenter"
                                     type="text"
                                     class="form-input flex-1 border-none focus:outline-none"
-                                    [value]="tprofitCenter"
+                                    [value]="adscription.tprofitCenter"
                                     readonly
                                 />
                             </div>
                         </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                             <div>
                                 <div
                                     class="flex sm:flex-row flex-col"
-                                    [ngClass]="isSubmitForm ? (form.get('user.costCenter')?.errors ? 'has-error' : 'has-success') : ''"
+                                    [ngClass]="isSubmitForm ? (form.get('costCenter')?.errors ? 'has-error' : 'has-success') : ''"
                                 >
                                     <label for="costCenter" class="mb-0 sm:w-28 sm:ltr:mr-2 rtl:ml-2">Centro de Costo:</label>
                                     <input
@@ -127,19 +142,25 @@
                                     />
                                 </div>
                                 <div class="pl-[7.5rem] mt-[0.25rem]">
-                                    <ng-container *ngIf="isSubmitForm && !form.get('user.costCenter')?.errors">
+                                    <ng-container *ngIf="isSubmitForm && !form.get('costCenter')?.errors">
                                         <span class="rounded bg-[#1abc9c] py-1 px-2 text-white">Perfecto!</span>
                                     </ng-container>
-                                    <ng-container *ngIf="isSubmitForm && form.get('user.costCenter')?.errors">
+                                    <ng-container *ngIf="isSubmitForm && form.get('costCenter')?.errors">
                                         <span class="rounded bg-danger py-1 px-2 text-white">Ingresa el Centro de Costo</span>
                                     </ng-container>
                                 </div>
                             </div>
-                            <div class="flex sm:flex-row flex-col">
-                                <input id="profitCenter" type="text" class="form-input flex-1 border-none focus:outline-none" [value]="tcostCenter" readonly />
+                            <div class="flex sm:flex-row flex-col" *ngIf="adscription.tcostCenter">
+                                <input
+                                    id="profitCenter"
+                                    type="text"
+                                    class="form-input flex-1 border-none focus:outline-none"
+                                    [value]="adscription.tcostCenter"
+                                    readonly
+                                />
                             </div>
                         </div>
-                        <div class="flex sm:flex-row flex-col">
+                        <div class="flex sm:flex-row flex-col pt-2">
                             <label for="sirch" class="mb-0 sm:w-28 sm:ltr:mr-2 rtl:ml-2">Información SIRH:</label>
                             <input id="sirch" type="text" class="form-input flex-1 border-none focus:outline-none" [value]="sirhInfo" readonly />
                         </div>
@@ -149,8 +170,8 @@
                         </div>
                     </div>
                     <div class="flex flex-col justify-between h-full">
-                        <div formGroupName="privileges" class="flex justify-end">
-                            <div class="table-responsive" *ngIf="userDetail?.data?.showPrivileges">
+                        <div class="flex justify-end">
+                            <div class="table-responsive" *ngIf="showPrivileges">
                                 <table class="w-96 border border-white-dark border-collapse">
                                     <thead>
                                         <tr>
@@ -160,24 +181,12 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!-- <tr>
-                                            <td>
-                                                <input type="checkbox" class="form-checkbox" />
-                                            </td>
-                                            <td>Acceso a Comité.</td>
-                                        </tr> -->
                                         <tr>
                                             <td>
                                                 <input type="checkbox" class="form-checkbox" formControlName="autps" />
                                             </td>
                                             <td>Administrar Problemas-Solución.</td>
                                         </tr>
-                                        <!-- <tr>
-                                            <td>
-                                                <input type="checkbox" class="form-checkbox" />
-                                            </td>
-                                            <td>Administrar Mensaje de Error.</td>
-                                        </tr> -->
                                         <tr>
                                             <td>
                                                 <input type="checkbox" class="form-checkbox" formControlName="autdoc" />
@@ -195,6 +204,7 @@
                                 rows="3"
                                 class="form-textarea"
                                 formControlName="justification"
+                                (blur)="setJustificationArea($event)"
                                 placeholder="En caso de hacer alguna modificación describa detalladamente la razón por la que hará dicho cambio . . ."
                             ></textarea>
                             <ng-container *ngIf="isSubmitForm && !form.controls['justification'].errors">
@@ -209,7 +219,7 @@
             </div>
             <div class="flex justify-end">
                 <div class="inline-flex">
-                    <button type="submit" class="btn btn-success !mt-6 mr-4">{{ userRpe != undefined ? 'Guardar Cambios' : 'Crear' }}</button>
+                    <button type="submit" class="btn btn-success !mt-6 mr-4">{{ edit ? 'Guardar Cambios' : 'Crear' }}</button>
                     <a routerLink="/administracion/usuarios" class="btn btn-danger !mt-6 cursor-pointer">Regresar</a>
                 </div>
             </div>

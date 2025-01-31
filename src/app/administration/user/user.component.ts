@@ -53,11 +53,8 @@ export class UserComponent implements AfterViewInit {
     loadData() {
         this.isLoading = true;
         const { number, size } = this.userTableConfig.pagination;
-        // const { searchText } = this.userTableConfig.search;
 
         this.userTableConfig.search.searchText = this.searchService.getSearchText();
-        console.log('searchText', this.searchService.getSearchText());
-
 
         this.userService.getUsers(this.searchService.getSearchText(), number, size).subscribe((response: ResponseData<PagedUserResponse>) => {
             this.userTableConfig.data = response.data.users.map((item) => ({
@@ -67,12 +64,14 @@ export class UserComponent implements AfterViewInit {
                 badge: this.getBadge(item.active),
                 actions: [{ tooltip: 'Editar', type: 'button', icon: 'edit', action: () => this.editUser(item.rpe) }],
             })) as UserWithActionsInterface[];
+
             this.userTableConfig.pagination = {
                 number: response.data.pageNumber,
                 size: response.data.pageSize,
                 totalElements: response.data.totalItems,
                 totalPages: response.data.totalPages,
             };
+
             this.isLoading = false;
         });
     }

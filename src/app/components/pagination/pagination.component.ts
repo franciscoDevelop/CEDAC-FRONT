@@ -17,7 +17,7 @@ export class PaginationComponent {
     @Output() changePage = new EventEmitter<number>();
 
     onPageChange(page: number) {
-        if (page >= 0 && page < this.paginationConfig.totalPages) {
+        if (page >= 1 && page <= this.paginationConfig.totalPages) {
             if (this.paginationConfig.number !== page) {
                 this.paginationConfig.number = page;
                 this.changePage.emit(page);
@@ -28,8 +28,8 @@ export class PaginationComponent {
     get pages(): number[] {
         const pages: number[] = [];
 
-        const startPage = Math.max(this.paginationConfig.number - 1, 0);
-        const endPage = Math.min(this.paginationConfig.number + 1, this.paginationConfig.totalPages - 1);
+        const startPage = Math.max(this.paginationConfig.number - 1, 1);
+        const endPage = Math.min(this.paginationConfig.number + 1, this.paginationConfig.totalPages);
 
         for (let i = startPage; i <= endPage; i++) {
             pages.push(i);

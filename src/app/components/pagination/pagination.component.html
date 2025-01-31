@@ -5,8 +5,8 @@
                 <button
                     type="button"
                     class="flex justify-center rounded-full bg-white-light p-2 font-semibold text-dark transition hover:bg-success hover:text-white dark:bg-[#191e3a] dark:text-white-light dark:hover:bg-success"
-                    (click)="onPageChange(0)"
-                    [disabled]="paginationConfig.number === 0"
+                    (click)="onPageChange(1)"
+                    [disabled]="paginationConfig.number === 1"
                 >
                     <icon-carets-down class="rotate-90 rtl:-rotate-90" />
                 </button>
@@ -16,21 +16,21 @@
                     type="button"
                     class="flex justify-center rounded-full bg-white-light px-2.5 py-2.5 font-semibold text-dark transition hover:bg-success hover:text-white dark:bg-[#191e3a] dark:text-white-light dark:hover:bg-success"
                     (click)="onPageChange(paginationConfig.number - 1)"
-                    [disabled]="paginationConfig.number === 0"
+                    [disabled]="paginationConfig.number === 1"
                 >
                     <icon-caret-down class="rotate-90 rtl:-rotate-90" />
                 </button>
             </li>
-            <li *ngIf="paginationConfig.number > 1">
+            <li *ngIf="paginationConfig.number > 2">
                 <button
                     type="button"
                     class="flex justify-center rounded-full bg-white-light px-3.5 py-2 font-semibold text-dark transition hover:bg-success hover:text-white dark:bg-[#191e3a] dark:text-white-light dark:hover:bg-success"
-                    (click)="onPageChange(0)"
+                    (click)="onPageChange(1)"
                 >
                     1
                 </button>
             </li>
-            <li *ngIf="paginationConfig.totalPages > 3 && paginationConfig.number > 2">
+            <li *ngIf="paginationConfig.number > 3">
                 <button
                     type="button"
                     class="flex justify-center rounded-full bg-white-light px-3.5 py-2 font-semibold text-dark transition hover:bg-success hover:text-white dark:bg-[#191e3a] dark:text-white-light dark:hover:bg-success"
@@ -40,7 +40,7 @@
             </li>
             <li *ngFor="let page of pages">
                 <button
-                    *ngIf="page >= 0 && page < paginationConfig.totalPages"
+                    *ngIf="page >= 1 && page <= paginationConfig.totalPages"
                     type="button"
                     class="flex justify-center rounded-full px-3.5 py-2 font-semibold transition"
                     [ngClass]="{
@@ -50,7 +50,7 @@
                     }"
                     (click)="onPageChange(page)"
                 >
-                    {{ page + 1 }}
+                    {{ page }}
                 </button>
             </li>
             <li *ngIf="paginationConfig.totalPages > 3 && paginationConfig.number < paginationConfig.totalPages - 2">
@@ -61,11 +61,11 @@
                     ...
                 </button>
             </li>
-            <li *ngIf="paginationConfig.number < paginationConfig.totalPages - 2">
+            <li *ngIf="paginationConfig.number < paginationConfig.totalPages - 1">
                 <button
                     type="button"
                     class="flex justify-center rounded-full bg-white-light px-3.5 py-2 font-semibold text-dark transition hover:bg-success hover:text-white dark:bg-[#191e3a] dark:text-white-light dark:hover:bg-success"
-                    (click)="onPageChange(paginationConfig.totalPages - 1)"
+                    (click)="onPageChange(paginationConfig.totalPages)"
                 >
                     {{ paginationConfig.totalPages }}
                 </button>
@@ -75,7 +75,7 @@
                     type="button"
                     class="flex justify-center rounded-full bg-white-light px-2.5 py-2.5 font-semibold text-dark transition hover:bg-success hover:text-white dark:bg-[#191e3a] dark:text-white-light dark:hover:bg-success"
                     (click)="onPageChange(paginationConfig.number + 1)"
-                    [disabled]="paginationConfig.number === paginationConfig.totalPages - 1"
+                    [disabled]="paginationConfig.number === paginationConfig.totalPages"
                 >
                     <icon-caret-down class="-rotate-90 rtl:rotate-90" />
                 </button>
@@ -85,7 +85,7 @@
                     type="button"
                     class="flex justify-center rounded-full bg-white-light p-2 font-semibold text-dark transition hover:bg-success hover:text-white dark:bg-[#191e3a] dark:text-white-light dark:hover:bg-success"
                     (click)="onPageChange(paginationConfig.totalPages)"
-                    [disabled]="paginationConfig.number === paginationConfig.totalPages - 1"
+                    [disabled]="paginationConfig.number === paginationConfig.totalPages"
                 >
                     <icon-carets-down class="-rotate-90 rtl:rotate-90" />
                 </button>

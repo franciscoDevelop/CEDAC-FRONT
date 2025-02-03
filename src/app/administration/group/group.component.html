@@ -1,0 +1,60 @@
+<app-breadcrumb [breadcrumbs]="breadcrumbs" />
+<div class="table-responsive">
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Sale</th>
+                <th>Status</th>
+                <th class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of tableData;">
+                <td class="whitespace-nowrap"> data.name </td>
+                <td> data.date </td>
+                <td> data.sale </td>
+                <td>
+                    <span
+                        class="badge whitespace-nowrap"
+                        [ngClass]="{
+                                'bg-primary': data.status === 'Complete',
+                                'bg-secondary': data.status === 'Pending',
+                                'bg-success': data.status === 'In Progress',
+                                'bg-danger': data.status === 'Canceled'
+                            }"
+                        >  data.status </span
+                    >
+                </td>
+                <td class="text-center">
+                    <div class="dropdown w-max">
+                        <div hlMenu>
+                            <a hlMenuButton href="javascript:;" class="align-middle">
+                                <svg class="m-auto h-5 w-5 opacity-70" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="5" cy="12" r="2" stroke="currentColor" stroke-width="1.5"></circle>
+                                    <circle opacity="0.5" cx="12" cy="12" r="2" stroke="currentColor" stroke-width="1.5"></circle>
+                                    <circle cx="19" cy="12" r="2" stroke="currentColor" stroke-width="1.5"></circle>
+                                </svg>
+                            </a>
+                            <ul *hlMenuItems @toggleAnimation class="ltr:right-0 rtl:left-0">
+                                <li>
+                                    <a href="javascript:;" *hlMenuItem="let menuItem">Download</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;" *hlMenuItem="let menuItem">Share</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;" *hlMenuItem="let menuItem">Edit</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;" *hlMenuItem="let menuItem">Delete</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -32,7 +32,7 @@
                                 <icon-menu-dashboard class="shrink-0 group-hover:!text-primary" />
 
                                 <span class="text-black dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3">
-                                    {{ 'administration' | translate }}
+                                    Administración
                                 </span>
                             </div>
                             <div [ngClass]="{ 'rtl:rotate-90 -rotate-90': !activeDropdown.includes('administration') }">
@@ -47,11 +47,11 @@
                                         routerLinkActive="active"
                                         [routerLinkActiveOptions]="{exact: true}"
                                         (click)="toggleMobileMenu()"
-                                        >{{ 'users' | translate }}</a
+                                        >Usuarios</a
                                     >
                                 </li>
                                 <li>
-                                    <a routerLink="/analytics" routerLinkActive="active" (click)="toggleMobileMenu()">{{ 'analytics' | translate }}</a>
+                                    <a routerLink="/administracion/grupos" routerLinkActive="active" (click)="toggleMobileMenu()">Grupos</a>
                                 </li>
                                 <li>
                                     <a routerLink="/finance" routerLinkActive="active" (click)="toggleMobileMenu()">{{ 'finance' | translate }}</a>

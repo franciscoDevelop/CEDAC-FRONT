@@ -35,7 +35,7 @@ export const routes: Routes = [
         component: AppLayout,
         children: [
             // Administration
-            { path: 'administracion', loadChildren: () => import('./administration/user/user.module').then((d) => d.UserModule) },
+            { path: 'administracion', loadChildren: () => import('./administration/administration.module').then((d) => d.AdministrationModule) },
             // dashboard
             { path: '', component: IndexComponent, data: { title: 'Sales Admin' } },
             { path: 'analytics', component: AnalyticsComponent, data: { title: 'Analytics Admin' } },

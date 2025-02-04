@@ -18,6 +18,8 @@ import { DualListComponent } from '../components/dual-list/dual-list.component';
 import { LoaderComponent } from '../components/loader/loader.component';
 import { adminRoutes } from './administration.route';
 import { GroupComponent } from './group/group.component';
+import { FormGroupComponent } from './group/form-group/form-group.component';
+import { CheckboxGridComponent } from '../components/checkbox-grid/checkbox-grid.component';
 
 @NgModule({
     imports: [
@@ -33,7 +35,8 @@ import { GroupComponent } from './group/group.component';
         DualListComponent,
         LoaderComponent,
         RouterLink,
+        CheckboxGridComponent,
     ],
-    declarations: [UserComponent, FormComponent, RolesComponent, PrivilegesComponent, ProfitsComponent, ModulesComponent, GroupComponent]
+    declarations: [UserComponent, FormComponent, RolesComponent, PrivilegesComponent, ProfitsComponent, ModulesComponent, GroupComponent, FormGroupComponent],
 })
 export class AdministrationModule {}

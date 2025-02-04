@@ -1,0 +1,19 @@
+<app-breadcrumb [breadcrumbs]="breadcrumbs" />
+
+<div class="table-responsive mt-10">
+    <table>
+        <thead>
+            <tr>
+                <th scope="col" colspan="2" class="text-center">
+                    REALICE LOS AJUSTES A LOS DATOS DEL GRUPO
+                    {{ groupName }}
+                </th>
+            </tr>
+            <tr>
+                <th scope="col">SECCIÓN</th>
+                <th scope="col">TIPO DE ACCESO</th>
+            </tr>
+        </thead>
+    </table>
+    <app-checkbox-grid title="Panel de Selección" [columns]="2" [checkboxGroups]="checkboxGroups" [form]="form"></app-checkbox-grid>
+</div>

@@ -1,0 +1,32 @@
+<div class="checkbox-grid">
+    <table>
+        <tbody>
+            <tr *ngFor="let group of checkboxGroups">
+                <td>{{ group.title }}</td>
+                <!-- Título del grupo -->
+                <td>
+                    <div [formGroup]="form">
+                        <div *ngFor="let checkbox of group.checkboxes">
+                            <div class="bg-gray-600 text-white w-full p-2 mb-2 dark:bg-dark dark:text-dark-light" *ngIf="checkbox.title">
+                                <span>{{ checkbox.title }}</span>
+                            </div>
+                            <div class="flex">
+                                <div *ngFor="let checkboxOption of checkbox.checkboxes" [ngClass]="'w-' + getColumnClass()">
+                                    <label class="inline-flex">
+                                        <input
+                                            type="checkbox"
+                                            [formControlName]="checkboxOption.controlName"
+                                            [value]="checkboxOption.value"
+                                            class="form-checkbox outline-success rounded-full"
+                                        />
+                                        <span>{{ checkboxOption.label }}</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

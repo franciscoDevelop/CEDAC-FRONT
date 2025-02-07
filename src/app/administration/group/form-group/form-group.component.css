@@ -1,0 +1,8 @@
+.align-left {
+    text-align: left; /* Align text to the left */
+    width: 100%; /* Ensure the textarea takes the full width */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    display: block; /* Ensure the textarea is a block element */
+    margin: 0; /* Remove any default margin */
+    padding: 8px; /* Add some padding for better appearance */
+}

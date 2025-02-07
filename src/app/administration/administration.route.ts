@@ -7,6 +7,7 @@ import { ProfitsComponent } from './user/profits/profits.component';
 import { ModulesComponent } from './user/modules/modules.component';
 import { GroupComponent } from './group/group.component';
 import { FormGroupComponent } from './group/form-group/form-group.component';
+import { SolutionAnswerComponent } from './solution-answer/solution-answer.component';
 
 export const adminRoutes: Routes = [
     // Usuarios
@@ -19,6 +20,8 @@ export const adminRoutes: Routes = [
     { path: 'usuarios/:rpe/modificar-modulos/:role', component: ModulesComponent, data: { title: 'Modificar módulos a usuario' } },
     // Grupos
     { path: 'grupos', component: GroupComponent, data: { title: 'Grupos' } },
-    { path: 'grupos/nuevo', component: FormComponent, data: { title: 'Crear grupo' } },
+    { path: 'grupos/nuevo', component: FormGroupComponent, data: { title: 'Crear grupo' } },
     { path: 'grupos/:id/editar', component: FormGroupComponent, data: { title: 'Modificar grupo' } },
+    // Soluciones y Respuestas
+    { path: 'soluciones-respuestas', component: SolutionAnswerComponent, data: { title: 'Soluciones / Respuestas' } }
 ];

@@ -5155,6 +5155,11 @@ mkdirp@^1.0.3:
   resolved "https://registry.npmjs.org/mkdirp/-/mkdirp-1.0.4.tgz"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
 
+moment@^2.30.1:
+  version "2.30.1"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.30.1.tgz#f8c91c07b7a786e30c59926df530b4eac96974ae"
+  integrity sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how==
+
 mrmime@2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/mrmime/-/mrmime-2.0.0.tgz"
@@ -7262,7 +7267,7 @@ void-elements@^2.0.0:
     sweetalert2 "^11.7.3"
     swiper "^11.1.9"
     tslib "^2.5.2"
-    vristo-angular "file:../../../../Library/Caches/Yarn/v6/npm-vristo-angular-0.0.0-1397ace6-56e5-42f1-9b64-ec7b88a0e697-1737045300008/node_modules/vristo-angular"
+    vristo-angular "file:../../../../Library/Caches/Yarn/v6/npm-vristo-angular-0.0.0-9d0fd90c-ddac-4e3c-8c95-60418665c181-1738782846179/node_modules/vristo-angular"
     zone.js "~0.14.4"
 
 watchpack@2.4.1, watchpack@^2.4.1:

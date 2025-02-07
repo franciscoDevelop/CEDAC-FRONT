@@ -17,6 +17,7 @@
                                             type="checkbox"
                                             [formControlName]="checkboxOption.controlName"
                                             [value]="checkboxOption.value"
+                                            (change)="handleChange($event, checkboxOption)"
                                             class="form-checkbox outline-success rounded-full"
                                         />
                                         <span>{{ checkboxOption.label }}</span>

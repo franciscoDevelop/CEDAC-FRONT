@@ -1,19 +1,43 @@
 <app-breadcrumb [breadcrumbs]="breadcrumbs" />
 
 <div class="table-responsive mt-10">
-    <table>
-        <thead>
-            <tr>
-                <th scope="col" colspan="2" class="text-center">
-                    REALICE LOS AJUSTES A LOS DATOS DEL GRUPO
-                    {{ groupName }}
-                </th>
-            </tr>
-            <tr>
-                <th scope="col">SECCIÓN</th>
-                <th scope="col">TIPO DE ACCESO</th>
-            </tr>
-        </thead>
-    </table>
-    <app-checkbox-grid title="Panel de Selección" [columns]="2" [checkboxGroups]="checkboxGroups" [form]="form"></app-checkbox-grid>
+    <form (ngSubmit)="onSubmit()">
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col" colspan="2" class="text-center">
+                        {{ groupName }}
+                    </th>
+                </tr>
+                <tr *ngIf="!editMode">
+                    <th scope="col" colspan="2" class="text-center">
+                        <div class="flex sm:flex-row flex-col" [formGroup]="form">
+                            <input id="horizontalGroupname" formControlName="NombreG" type="text" placeholder="Nombre del Grupo" class="form-input flex-1" />
+                        </div>
+                    </th>
+                </tr>
+                <tr>
+                    <th scope="col">SECCIÓN</th>
+                    <th scope="col">TIPO DE ACCESO</th>
+                </tr>
+            </thead>
+        </table>
+        <app-checkbox-grid title="Panel de Selección" [columns]="2" [checkboxGroups]="checkboxGroups" [form]="form"></app-checkbox-grid>
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col" class="!w-[26.5rem] md:min-w-[23.5rem]">Comentarios adicionales del grupo</th>
+                    <th scope="col">
+                        <div [formGroup]="form">
+                            <textarea formControlName="comentarios" rows="3" class="form-textarea w-full" placeholder="Ingresar comentarios"></textarea>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+        </table>
+        <div class="flex justify-center mt-10">
+            <button type="submit" class="btn btn-success">{{ buttonTitle }}</button>
+            <button type="button" class="btn btn-danger ml-5" (click)="onCancel()">Regresar</button>
+        </div>
+    </form>
 </div>

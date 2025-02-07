@@ -6,6 +6,7 @@ interface CheckboxOption {
     controlName: string;
     label: string;
     value: any;
+    onChange?: (value: any) => void;
 }
 
 interface CheckboxGroupOptions {
@@ -32,5 +33,13 @@ export class CheckboxGridComponent {
 
     getColumnClass(): string {
         return `${Math.floor(12 / this.columns)}/12`; // Calcula el ancho de columna
+    }
+
+    // Método que se llamará en el cambio del checkbox
+    handleChange(event: Event, option: CheckboxOption) {
+        const checkboxValue = (event.target as HTMLInputElement).checked;
+        if (option.onChange) {
+            option.onChange(checkboxValue); // Llama a la función específica del checkbox si existe
+        }
     }
 }

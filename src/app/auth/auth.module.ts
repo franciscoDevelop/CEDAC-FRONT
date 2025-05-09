@@ -13,8 +13,10 @@ import { CoverLockscreenComponent } from './cover-lockscreen';
 import { CoverLoginComponent } from './cover-login';
 import { CoverPasswordResetComponent } from './cover-password-reset';
 import { CoverRegisterComponent } from './cover-register';
+import { LoginComponent } from './login';
 
 const routes: Routes = [
+    { path: 'auth/login', component: LoginComponent, data: { title: 'Inicio sesión' } },
     { path: 'auth/boxed-lockscreen', component: BoxedLockscreenComponent, data: { title: 'Boxed Lockscreen' } },
     {
         path: 'auth/boxed-password-reset',
@@ -43,6 +45,7 @@ const routes: Routes = [
         CoverLoginComponent,
         CoverPasswordResetComponent,
         CoverRegisterComponent,
+        LoginComponent,
     ],
 })
 export class AuthModule {}

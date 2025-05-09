@@ -1,17 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { AuthService } from './core/auth/auth.service';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
     constructor(
         private readonly router: Router,
         private readonly activatedRoute: ActivatedRoute,
         private readonly titleService: Title,
+        private auth: AuthService,
     ) {
         this.router.events
             .pipe(
@@ -37,5 +39,15 @@ export class AppComponent {
                 }),
             )
             .subscribe();
+    }
+
+    async ngOnInit() {
+        const token = sessionStorage.getItem('access_token');
+        if (token) {
+            const isValid = await this.auth.isTokenValid(token);
+            if (!isValid) {
+                this.auth.logout();
+            }
+        }
     }
 }

@@ -14,6 +14,7 @@ export class FormGroupComponent implements OnInit {
     breadcrumbs!: BreadcrumbsInterface[];
     groupName: string = '';
     form!: FormGroup;
+
     checkboxGroups = [
         {
             title: 'SOLICITUDES',

@@ -4,7 +4,7 @@
 
 export const environment = {
     production: false,
-    apiBaseUrl: 'http://localhost:5233/api',
+    apiBaseUrl: 'https://localhost:7061/api',
     noReuseRoutes: ['login', 'register', 'forgot-password', 'reset-password'],
     session: {
         uid: 'c73a4eb3', //prefijo para las variables de sesión
